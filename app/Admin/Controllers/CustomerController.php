@@ -101,6 +101,7 @@ class CustomerController extends AdminController
         $show->field('status', __('Status'));
         $show->field('setup_at', __('Setup at'));
         $show->field('plan', __('Plan'));
+        $show->field('note', __('Ghi chú'));
         $show->field('sale_id', __('Sale id'));
 
         return $show;
@@ -135,6 +136,7 @@ class CustomerController extends AdminController
         $form->datetime('setup_at', __('Lịch hẹn gặp'))->default(date('Y-m-d H:i:s'));
         $form->text('plan', __('Gói hiện tại'));
         $form->select('source', __('Nguồn khách'))->options(Constant::SOURCE)->setWidth(2, 2);
+        $form->text('note', __('Ghi chú'));
         $form->select('status', __('Trạng thái'))->options(Constant::CUSTOMER_STATUS)->setWidth(2, 2);
 
         return $form;
