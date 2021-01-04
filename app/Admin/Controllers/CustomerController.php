@@ -54,7 +54,7 @@ class CustomerController extends AdminController
                 return Constant::SOURCE[$show];
             }
         })->filter(Constant::SOURCE)->sortable();
-        $grid->column('setup_at', __('Ngày hẹn'))->sortable()->editable('date');
+        $grid->column('setup_at', __('Ngày hẹn'))->sortable()->editable();
         $grid->column('plan', __('Plan'))->editable();
         $grid->column('note', __('Note'))->editable();
         $grid->sale_id('Nhân viên')->display(function($formalityAreaId) {
@@ -63,6 +63,7 @@ class CustomerController extends AdminController
                 return $formalityArea->name;
             }
         });
+        $grid->column('like', __('Quan tâm'))->editable();
 
         if (Admin::user()->isRole('Editor')){
             $grid->model()->where('sale_id', '=', Admin::user()->id);
