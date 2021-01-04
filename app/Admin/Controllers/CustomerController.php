@@ -29,8 +29,8 @@ class CustomerController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Customer());
-        $grid->column('name', __('Name'))->display(function ($title) {
-            return "<span style='white-space: pre;'>$title</span>";
+        $grid->column('name', __('Name'))->display(function () {
+            return "<a href='customers/" . $this->id . "' style='white-space: pre;'>$this->name</a>";
         })->filter('like')->sortable();
         $grid->column('phone_number', __('Số điện thoại'))->display(function ($title) {
             return "<a href='tel:" . preg_replace('/\s+/', '', $title) . "' style='white-space: pre;'>$title</a>";
@@ -46,17 +46,17 @@ class CustomerController extends AdminController
             }
         })->filter(Constant::TELCO)->sortable();
         $grid->status('Trạng thái')->display(function($show) {
-            if (isset($show)){
-                return Constant::CUSTOMER_STATUS[$show];
-            }
-        })->filter(Constant::CUSTOMER_STATUS)->sortable();
+            return $show;
+        })->filter(Constant::CUSTOMER_STATUS)->sortable()->editable('select', Constant::CUSTOMER_STATUS);
+
         $grid->source('Nguồn')->display(function($show) {
             if (isset($show)){
                 return Constant::SOURCE[$show];
             }
         })->filter(Constant::SOURCE)->sortable();
-        $grid->column('setup_at', __('Ngày hẹn'))->sortable();
-        $grid->column('plan', __('Plan'));
+        $grid->column('setup_at', __('Ngày hẹn'))->sortable()->editable('date');
+        $grid->column('plan', __('Plan'))->editable();
+        $grid->column('note', __('Note'))->editable();
         $grid->sale_id('Nhân viên')->display(function($formalityAreaId) {
             $formalityArea = AuthUser::find($formalityAreaId);
             if($formalityArea){
