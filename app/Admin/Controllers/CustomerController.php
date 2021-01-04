@@ -92,7 +92,7 @@ class CustomerController extends AdminController
 
         $show->field('id', __('Id'));
         $show->field('name', __('Name'));
-        $show->field('birthday', __('Birthday'));
+        //$show->field('birthday', __('Birthday'));
         $show->field('room_no', __('Room no'));
         $show->field('phone_number', __('Phone number'));
         $show->field('created_at', __('Created at'));
@@ -126,7 +126,7 @@ class CustomerController extends AdminController
             $form->select('sale_id', __('Nhân viên chăm sóc'))->options(AuthUser::all()->pluck('name','id'))->readonly();
         } else {*/
             $form->text('name', __('Name'));
-            $form->datetime('birthday', __('Birthday'))->default(date('Y-m-d H:i:s'));
+            //$form->datetime('birthday', __('Birthday'))->default(date('Y-m-d H:i:s'));
             $form->text('room_no', __('Room no'));
             $form->text('phone_number', __('Phone number'));
             $form->select('block_no', __('Toà nhà'))->options(Constant::BLOCK)->setWidth(2, 2);
