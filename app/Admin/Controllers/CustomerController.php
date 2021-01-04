@@ -74,6 +74,7 @@ class CustomerController extends AdminController
                 $tools->append(new BatchReplicate());
             });
         }
+        $grid->model()->orderBy('id', 'DESC');
         $grid->exporter(new ExcelExpoter());
         return $grid;
     }
