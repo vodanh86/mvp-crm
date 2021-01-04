@@ -66,7 +66,6 @@ class CustomerController extends AdminController
 
         if (Admin::user()->isRole('Editor')){
             $grid->model()->where('sale_id', '=', Admin::user()->id);
-            $grid->disableCreateButton();
             $grid->actions(function ($actions) {
                 $actions->disableDelete();
             });

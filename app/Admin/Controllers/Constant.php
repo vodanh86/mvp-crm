@@ -10,7 +10,7 @@ abstract class Constant
 7 => "N04 AA-CC", 8 => "N01 T5");
     const CUSTOMER_STATUS = array( 0 => 'Chưa liên hệ', 1 => "Chưa có nhu cầu", 2 => "Đã di chuyển", 3 => "Đang hẹn lên",
     4 => "Đã mua", 5 => "Khác");
-    const SOURCE = array(0 => 'Excel', 1 => 'Facebook', 2 => 'Page', 3 => 'Khác');
+    const SOURCE = array(0 => 'Excel', 1 => 'Facebook', 2 => 'Page', 3 => 'Voucher', 4 => 'PR', 5 => 'WI', 6 => 'Hội viên', 7 => "Khác");
     const SHOW_STATUS = array(0 => 'Ẩn', 1 => 'Hiện');
     const SWITCH_STATE = array(
         'on'  => ['value' => 1, 'text' => '&nbsp;Hiện  ', 'color' => 'success'],
