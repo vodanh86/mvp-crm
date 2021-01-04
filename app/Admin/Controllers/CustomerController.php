@@ -134,7 +134,7 @@ class CustomerController extends AdminController
             $form->select('sale_id', __('Nhân viên chăm sóc'))->options(AuthUser::all()->pluck('name','id'));
         //}
 
-        $form->datetime('setup_at', __('Lịch hẹn gặp'))->default(date('Y-m-d H:i:s'));
+        $form->text('setup_at', __('Lịch hẹn gặp'));
         $form->text('plan', __('Gói hiện tại'));
         $form->select('source', __('Nguồn khách'))->options(Constant::SOURCE)->setWidth(2, 2);
         $form->text('note', __('Ghi chú'));
