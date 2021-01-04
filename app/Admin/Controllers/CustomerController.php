@@ -63,8 +63,7 @@ class CustomerController extends AdminController
                 return $formalityArea->name;
             }
         });
-        $grid->column('like', __('Quan tâm'))->editable();
-
+        $grid->column('like', __('Quan tâm'))->editable('select', Constant::FAVORITE);
         if (Admin::user()->isRole('Editor')){
             $grid->model()->where('sale_id', '=', Admin::user()->id);
             $grid->actions(function ($actions) {
@@ -75,6 +74,7 @@ class CustomerController extends AdminController
                 $tools->append(new BatchReplicate());
             });
         }
+        $grid->model()->orderBy('like', 'DESC');
         $grid->model()->orderBy('id', 'DESC');
         $grid->exporter(new ExcelExpoter());
         return $grid;
@@ -139,7 +139,7 @@ class CustomerController extends AdminController
         $form->select('source', __('Nguồn khách'))->options(Constant::SOURCE)->setWidth(2, 2);
         $form->text('note', __('Ghi chú'));
         $form->select('status', __('Trạng thái'))->options(Constant::CUSTOMER_STATUS)->setWidth(2, 2);
-
+        $form->select('like', __('Quan tâm'))->options(Constant::FAVORITE)->setWidth(2, 2);
         return $form;
     }
 }

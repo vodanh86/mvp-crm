@@ -12,6 +12,7 @@ abstract class Constant
     4 => "Đã mua", 6 => "Đang tập chỗ khác", 100 => "Khác");
     const SOURCE = array(0 => 'Excel', 1 => 'Facebook', 2 => 'Page', 3 => 'Voucher', 4 => 'BR', 5 => 'WI', 6 => 'Hội viên', 7 => "Hotline", 100 => "Khác");
     const SHOW_STATUS = array(0 => 'Ẩn', 1 => 'Hiện');
+    const FAVORITE = array(0 => 'Không', 1 => 'Có');
     const SWITCH_STATE = array(
         'on'  => ['value' => 1, 'text' => '&nbsp;Hiện  ', 'color' => 'success'],
         'off' => ['value' => 0, 'text' => '&nbsp;&nbsp;Ẩn&nbsp;&nbsp;', 'color' => 'danger'],
