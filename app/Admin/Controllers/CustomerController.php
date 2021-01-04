@@ -114,7 +114,7 @@ class CustomerController extends AdminController
     protected function form()
     {
         $form = new Form(new Customer());
-        if (Admin::user()->isRole('Editor')){
+        /*if (Admin::user()->isRole('Editor')){
             $form->text('name', __('Name'))->readonly();
             $form->datetime('birthday', __('Birthday'))->default(date('Y-m-d H:i:s'))->readonly();
             $form->text('room_no', __('Room no'))->readonly();
@@ -122,7 +122,7 @@ class CustomerController extends AdminController
             $form->select('block_no', __('Toà nhà'))->options(Constant::BLOCK)->setWidth(2, 2)->readonly();
             $form->select('telco', __('Nhà mạng'))->options(Constant::TELCO)->setWidth(2, 2)->readonly();
             $form->select('sale_id', __('Nhân viên chăm sóc'))->options(AuthUser::all()->pluck('name','id'))->readonly();
-        } else {
+        } else {*/
             $form->text('name', __('Name'));
             $form->datetime('birthday', __('Birthday'))->default(date('Y-m-d H:i:s'));
             $form->text('room_no', __('Room no'));
@@ -130,7 +130,7 @@ class CustomerController extends AdminController
             $form->select('block_no', __('Toà nhà'))->options(Constant::BLOCK)->setWidth(2, 2);
             $form->select('telco', __('Nhà mạng'))->options(Constant::TELCO)->setWidth(2, 2);
             $form->select('sale_id', __('Nhân viên chăm sóc'))->options(AuthUser::all()->pluck('name','id'));
-        }
+        //}
 
         $form->datetime('setup_at', __('Lịch hẹn gặp'))->default(date('Y-m-d H:i:s'));
         $form->text('plan', __('Gói hiện tại'));
