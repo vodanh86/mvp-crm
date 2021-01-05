@@ -45,7 +45,19 @@ class CustomerController extends AdminController
                 return Constant::TELCO[$show];
             }
         })->filter(Constant::TELCO)->sortable();
-        if (Admin::user()->isRole('Editor')){
+        if ( Admin::user()->isAdministrator()) {
+            $grid->status('Trạng thái')->display(function($show) {
+                return $show;
+            })->filter(Constant::CUSTOMER_STATUS)->sortable()->editable('select', Constant::CUSTOMER_STATUS);
+
+            $grid->pt_status('Trạng thái PT')->display(function($show) {
+                return $show;
+            })->filter(Constant::CUSTOMER_STATUS)->sortable()->editable('select', Constant::CUSTOMER_STATUS);
+            
+            $grid->tools(function (Grid\Tools $tools) {
+                $tools->append(new BatchReplicate());
+            });
+        } elseif (Admin::user()->isRole('Editor')){
             $grid->model()->where('sale_id', '=', Admin::user()->id);
             $grid->actions(function ($actions) {
                 $actions->disableDelete();
@@ -72,7 +84,6 @@ class CustomerController extends AdminController
             })->filter(Constant::CUSTOMER_STATUS)->sortable()->editable('select', Constant::CUSTOMER_STATUS);
         } 
         else {
-
             $grid->status('Trạng thái')->display(function($show) {
                 return $show;
             })->filter(Constant::CUSTOMER_STATUS)->sortable()->editable('select', Constant::CUSTOMER_STATUS);
