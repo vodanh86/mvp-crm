@@ -131,7 +131,7 @@ class CustomerController extends AdminController
             $form->text('phone_number', __('Phone number'));
             $form->select('block_no', __('Toà nhà'))->options(Constant::BLOCK)->setWidth(2, 2);
             $form->select('telco', __('Nhà mạng'))->options(Constant::TELCO)->setWidth(2, 2);
-            $form->select('sale_id', __('Nhân viên chăm sóc'))->options(AuthUser::all()->pluck('name','id'));
+            $form->select('sale_id', __('Nhân viên chăm sóc'))->options(AuthUser::all()->pluck('name','id'))->default(Admin::user()->id);
         //}
 
         $form->text('setup_at', __('Lịch hẹn gặp'));
@@ -139,6 +139,7 @@ class CustomerController extends AdminController
         $form->select('source', __('Nguồn khách'))->options(Constant::SOURCE)->setWidth(2, 2);
         $form->text('note', __('Ghi chú'));
         $form->select('status', __('Trạng thái'))->options(Constant::CUSTOMER_STATUS)->setWidth(2, 2);
+        $form->select('pt_status', __('Trạng thái PT'))->options(Constant::CUSTOMER_STATUS)->setWidth(2, 2);
         $form->select('like', __('Quan tâm'))->options(Constant::FAVORITE)->setWidth(2, 2);
         return $form;
     }
