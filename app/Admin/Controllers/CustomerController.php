@@ -45,9 +45,6 @@ class CustomerController extends AdminController
                 return Constant::TELCO[$show];
             }
         })->filter(Constant::TELCO)->sortable();
-        $grid->status('Trạng thái')->display(function($show) {
-            return $show;
-        })->filter(Constant::CUSTOMER_STATUS)->sortable()->editable('select', Constant::CUSTOMER_STATUS);
 
         $grid->source('Nguồn')->display(function($show) {
             if (isset($show)){
@@ -69,7 +66,37 @@ class CustomerController extends AdminController
             $grid->actions(function ($actions) {
                 $actions->disableDelete();
             });
-        } else {
+
+            $grid->status('Trạng thái')->display(function($show) {
+                return $show;
+            })->filter(Constant::CUSTOMER_STATUS)->sortable()->editable('select', Constant::CUSTOMER_STATUS);
+        } elseif (Admin::user()->isRole('Pt')){
+            $grid->model()->where('sale_id', '=', Admin::user()->id);
+            $grid->model()->where('status', '=', 4);
+            $grid->actions(function ($actions) {
+                $actions->disableDelete();
+            });
+
+            $grid->pt_status('Trạng thái PT')->display(function($show) {
+                return $show;
+            })->filter(Constant::CUSTOMER_STATUS)->sortable()->editable('select', Constant::CUSTOMER_STATUS);
+        } elseif (Admin::user()->isRole('Fm')){
+            $grid->model()->where('status', '=', 4);
+
+            $grid->pt_status('Trạng thái PT')->display(function($show) {
+                return $show;
+            })->filter(Constant::CUSTOMER_STATUS)->sortable()->editable('select', Constant::CUSTOMER_STATUS);
+        } 
+        else {
+
+            $grid->status('Trạng thái')->display(function($show) {
+                return $show;
+            })->filter(Constant::CUSTOMER_STATUS)->sortable()->editable('select', Constant::CUSTOMER_STATUS);
+
+            $grid->pt_status('Trạng thái PT')->display(function($show) {
+                return $show;
+            })->filter(Constant::CUSTOMER_STATUS)->sortable()->editable('select', Constant::CUSTOMER_STATUS);
+            
             $grid->tools(function (Grid\Tools $tools) {
                 $tools->append(new BatchReplicate());
             });
@@ -138,8 +165,15 @@ class CustomerController extends AdminController
         $form->text('plan', __('Gói hiện tại'));
         $form->select('source', __('Nguồn khách'))->options(Constant::SOURCE)->setWidth(2, 2);
         $form->text('note', __('Ghi chú'));
-        $form->select('status', __('Trạng thái'))->options(Constant::CUSTOMER_STATUS)->setWidth(2, 2);
-        $form->select('pt_status', __('Trạng thái PT'))->options(Constant::CUSTOMER_STATUS)->setWidth(2, 2);
+        if (Admin::user()->isRole('Pt') || Admin::user()->isRole('Fm')){
+            $form->select('pt_status', __('Trạng thái PT'))->options(Constant::CUSTOMER_STATUS)->setWidth(2, 2);
+        } elseif (Admin::user()->isRole('Pt') || Admin::user()->isRole('Fm')){
+            $form->select('status', __('Trạng thái'))->options(Constant::CUSTOMER_STATUS)->setWidth(2, 2);
+        } else {
+            $form->select('status', __('Trạng thái'))->options(Constant::CUSTOMER_STATUS)->setWidth(2, 2);
+            $form->select('pt_status', __('Trạng thái PT'))->options(Constant::CUSTOMER_STATUS)->setWidth(2, 2);
+        }
+        
         $form->select('like', __('Quan tâm'))->options(Constant::FAVORITE)->setWidth(2, 2);
         return $form;
     }
