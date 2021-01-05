@@ -115,6 +115,9 @@ class CustomerController extends AdminController
         $grid->model()->orderBy('like', 'DESC');
         $grid->model()->orderBy('id', 'DESC');
         $grid->exporter(new ExcelExpoter());
+
+        $grid->quickSearch('phone_number');
+
         return $grid;
     }
 
