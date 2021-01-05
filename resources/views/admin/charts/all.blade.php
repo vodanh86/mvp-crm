@@ -3,7 +3,11 @@
 $label = array();
 $countAll = array();
 foreach($count as $block){
-    $label[] = $blocks[$block["block_no"]];
+    if (array_key_exists($block["block_no"], $blocks)){
+        $label[] = $blocks[$block["block_no"]];
+    } else {
+        $label[] = "";
+    }
     $countAll[] = $block["total"];
 } 
 ?>
