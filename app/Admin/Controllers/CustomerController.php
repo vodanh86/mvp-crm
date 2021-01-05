@@ -45,22 +45,6 @@ class CustomerController extends AdminController
                 return Constant::TELCO[$show];
             }
         })->filter(Constant::TELCO)->sortable();
-
-        $grid->source('Nguồn')->display(function($show) {
-            if (isset($show)){
-                return Constant::SOURCE[$show];
-            }
-        })->filter(Constant::SOURCE)->sortable();
-        $grid->column('setup_at', __('Ngày hẹn'))->sortable()->editable();
-        $grid->column('plan', __('Plan'))->editable();
-        $grid->column('note', __('Note'))->editable();
-        $grid->sale_id('Nhân viên')->display(function($formalityAreaId) {
-            $formalityArea = AuthUser::find($formalityAreaId);
-            if($formalityArea){
-                return $formalityArea->name;
-            }
-        });
-        $grid->column('like', __('Quan tâm'))->editable('select', Constant::FAVORITE);
         if (Admin::user()->isRole('Editor')){
             $grid->model()->where('sale_id', '=', Admin::user()->id);
             $grid->actions(function ($actions) {
@@ -101,6 +85,22 @@ class CustomerController extends AdminController
                 $tools->append(new BatchReplicate());
             });
         }
+        $grid->source('Nguồn')->display(function($show) {
+            if (isset($show)){
+                return Constant::SOURCE[$show];
+            }
+        })->filter(Constant::SOURCE)->sortable();
+        $grid->column('setup_at', __('Ngày hẹn'))->sortable()->editable();
+        $grid->column('plan', __('Plan'))->editable();
+        $grid->column('note', __('Note'))->editable();
+        $grid->sale_id('Nhân viên')->display(function($formalityAreaId) {
+            $formalityArea = AuthUser::find($formalityAreaId);
+            if($formalityArea){
+                return $formalityArea->name;
+            }
+        });
+        $grid->column('like', __('Quan tâm'))->editable('select', Constant::FAVORITE);
+        
         $grid->model()->orderBy('like', 'DESC');
         $grid->model()->orderBy('id', 'DESC');
         $grid->exporter(new ExcelExpoter());
