@@ -109,14 +109,14 @@ class CustomerController extends AdminController
             if($formalityArea){
                 return $formalityArea->name;
             }
-        });
+        })->filter(AuthUser::all()->pluck('name', 'id')->toArray());
         $grid->column('like', __('Quan tâm'))->editable('select', Constant::FAVORITE);
         
         $grid->model()->orderBy('like', 'DESC');
         $grid->model()->orderBy('id', 'DESC');
         $grid->exporter(new ExcelExpoter());
 
-        $grid->quickSearch('phone_number');
+        $grid->quickSearch('phone_number', 'name');
 
         return $grid;
     }
