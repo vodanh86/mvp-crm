@@ -6,7 +6,7 @@ foreach($count as $block){
     if (array_key_exists($block["block_no"], $blocks)){
         $label[] = $blocks[$block["block_no"]];
     } else {
-        $label[] = "";
+        $label[] = "Không xác định";
     }
     $countAll[] = $block["total"];
 } 
