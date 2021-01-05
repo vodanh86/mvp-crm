@@ -31,14 +31,14 @@ class PlanController extends AdminController
         $grid->column('duration', __('Duration'));
         $grid->column('price', __('Price'));
 
-        //if (Admin::user()->isRole('Editor')){
-            $grid->disableCreateButton();
+        if (Admin::user()->isRole('Editor')){
+            /*$grid->disableCreateButton();
             $grid->actions(function ($actions) {
                 $actions->disableDelete();
                 $actions->disableEdit();
-            });
-        //} else {
-        //}
+            });*/
+        } else {
+        }
         
         return $grid;
     }
