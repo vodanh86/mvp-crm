@@ -11,6 +11,8 @@ use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use Encore\Admin\Facades\Admin;
 use App\Admin\Extensions\ExcelExpoter;
+use App\Admin\Actions\Customer\StarCustomer;
+
 
 class CustomerController extends AdminController
 {
@@ -110,7 +112,9 @@ class CustomerController extends AdminController
                 return $formalityArea->name;
             }
         })->filter(AuthUser::all()->pluck('name', 'id')->toArray());
-        $grid->column('like', __('Quan tâm'))->editable('select', Constant::FAVORITE);
+        $grid->column('like')->action(StarCustomer::class);
+
+        //$grid->column('like', __('Quan tâm'))->editable('select', Constant::FAVORITE);
         $grid->column('end_date', __('Ngày cuối HĐ'))->filter('range');
         
         $grid->model()->orderBy('like', 'DESC');
