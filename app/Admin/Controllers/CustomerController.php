@@ -111,7 +111,7 @@ class CustomerController extends AdminController
             }
         })->filter(AuthUser::all()->pluck('name', 'id')->toArray());
         $grid->column('like', __('Quan tâm'))->editable('select', Constant::FAVORITE);
-        $grid->column('end_date', __('Hạn'))->filter('range');
+        $grid->column('end_date', __('Ngày cuối HĐ'))->filter('range');
         
         $grid->model()->orderBy('like', 'DESC');
         $grid->model()->orderBy('id', 'DESC');
