@@ -46,7 +46,7 @@ class CustomerController extends AdminController
             if (isset($show)){
                 return Constant::TELCO[$show];
             }
-        })->filter(Constant::TELCO)->sortable();
+        })->filter(Constant::TELCO)->sortable()->hide();
         if ( Admin::user()->isAdministrator()) {
             $grid->status('Trạng thái')->display(function($show) {
                 return $show;
@@ -115,7 +115,7 @@ class CustomerController extends AdminController
         $grid->column('like')->action(StarCustomer::class);
 
         //$grid->column('like', __('Quan tâm'))->editable('select', Constant::FAVORITE);
-        $grid->column('end_date', __('Ngày cuối HĐ'))->filter('range');
+        $grid->column('end_date', __('Ngày cuối HĐ'))->filter('range')->hide();
         
         $grid->model()->orderBy('like', 'DESC');
         $grid->model()->orderBy('id', 'DESC');
