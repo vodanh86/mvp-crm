@@ -31,7 +31,7 @@ class CustomerController extends AdminController
         $grid = new Grid(new Customer());
         $grid->column('name', __('Name'))->display(function () {
             return "<a href='customers/" . $this->id . "' style='white-space: pre;'>$this->name</a>";
-        })->filter('like')->sortable();
+        })->filter('like')->sortable()->setAttributes(['width' => ' 240px']);
         $grid->column('phone_number', __('Số điện thoại'))->display(function ($title) {
             return "<a href='tel:" . preg_replace('/\s+/', '', $title) . "' style='white-space: pre;'>$title</a>";
         })->filter('like');
@@ -103,7 +103,7 @@ class CustomerController extends AdminController
         })->filter(Constant::SOURCE)->sortable();
         $grid->column('setup_at', __('Ngày hẹn'))->sortable()->editable();
         $grid->column('plan', __('Plan'))->editable();
-        $grid->column('note', __('Note'))->editable();
+        $grid->column('note', __('Note'))->editable()->setAttributes(['width' => ' 240px']);
         $grid->sale_id('Nhân viên')->display(function($formalityAreaId) {
             $formalityArea = AuthUser::find($formalityAreaId);
             if($formalityArea){
@@ -111,6 +111,7 @@ class CustomerController extends AdminController
             }
         })->filter(AuthUser::all()->pluck('name', 'id')->toArray());
         $grid->column('like', __('Quan tâm'))->editable('select', Constant::FAVORITE);
+        $grid->column('end_date', __('Hạn'))->filter('range');
         
         $grid->model()->orderBy('like', 'DESC');
         $grid->model()->orderBy('id', 'DESC');
@@ -149,6 +150,7 @@ class CustomerController extends AdminController
         $show->field('setup_at', __('Setup at'));
         $show->field('plan', __('Plan'));
         $show->field('note', __('Ghi chú'));
+        $show->field('end_date', __('Ngày hết hạn'));
         $show->field('sale_id', __('Sale id'));
 
         return $show;
@@ -184,6 +186,7 @@ class CustomerController extends AdminController
         $form->text('plan', __('Gói hiện tại'));
         $form->select('source', __('Nguồn khách'))->options(Constant::SOURCE)->setWidth(2, 2);
         $form->text('note', __('Ghi chú'));
+        $form->date('end_date', __('Ngày hết hạn'));
         if (Admin::user()->isRole('Pt') || Admin::user()->isRole('Fm')){
             $form->select('pt_status', __('Trạng thái PT'))->options(Constant::CUSTOMER_STATUS)->setWidth(2, 2);
         } elseif (Admin::user()->isRole('Pt') || Admin::user()->isRole('Fm')){
