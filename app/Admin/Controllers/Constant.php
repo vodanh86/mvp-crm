@@ -9,7 +9,7 @@ abstract class Constant
     const BLOCK = array( 0 => 'N02 T3', 1 => "N03 T3-T4", 2 => "N03 T1", 3 => "N01 T4", 4 => "N02 T1", 5 => "N03 T2", 6 => "N01 T1",
 7 => "N04 AA-CC", 8 => "N01 T5", 100=> "Khác");
     const CUSTOMER_STATUS = array( 0 => 'Chưa liên hệ', 1 => "Chưa có nhu cầu", 2 => "Đã di chuyển", 3 => "Đang hẹn lên",
-    4 => "Đã mua", 6 => "Đang tập chỗ khác", 100 => "Khác");
+    4 => "Đã mua", 6 => "Đang tập chỗ khác", 7 => "Đang chăm sóc", 100 => "Khác");
     const SOURCE = array(0 => 'Excel', 1 => 'Facebook', 2 => 'Page', 3 => 'Voucher', 4 => 'BR', 5 => 'WI', 6 => 'Hội viên', 7 => "Hotline",
     8 => "Khách cũ", 100 => "Khác");
     const SHOW_STATUS = array(0 => 'Ẩn', 1 => 'Hiện');

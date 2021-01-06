@@ -118,6 +118,11 @@ class CustomerController extends AdminController
 
         $grid->quickSearch('phone_number', 'name');
 
+        $grid->filter(function($filter){
+            $filter->notIn('sale_id', "Sale")->multipleSelect(AuthUser::all()->pluck('name', 'id')->toArray());
+        });
+        
+
         return $grid;
     }
 
