@@ -125,6 +125,22 @@ class CustomerController extends AdminController
 
         $grid->filter(function($filter){
             //$filter->notIn('sale_id', "Sale")->multipleSelect(AuthUser::all()->pluck('name', 'id')->toArray());
+            $filter->where(function ($query) {
+                switch ($this->input) {
+                    case 'yes':
+                        // custom complex query if the 'yes' option is selected
+                        $query->whereNotNull('sale_id');
+                        break;
+                    case 'no':
+                        $query->whereNull('sale_id');
+                        break;
+                }
+            }, 'Nhân viên chăm sóc', 'name_for_url_shortcut')->radio([
+                '' => 'Tất cả',
+                'yes' => 'Đang chăm sóc',
+                'no' => 'Chưa chăm sóc',
+            ]);
+            
         });
         
 
