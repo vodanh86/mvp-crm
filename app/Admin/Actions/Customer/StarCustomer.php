@@ -19,7 +19,7 @@ class StarCustomer extends RowAction
         $customer->save();
 
         // return a new html to the front end after saving
-        $html = $customer->like == 1 ? "<i class=\"fa fa-star\"></i>" : "<i class=\"fa fa-star-o\"></i>";
+        $html = $customer->like == 1 ? "<i class=\"fa fa-star text-warning\"></i>" : "<i class=\"fa fa-star-o\"></i>";
 
         return $this->response()->html($html);
     }
@@ -27,6 +27,6 @@ class StarCustomer extends RowAction
     // This method displays different icons in this column based on the value of the `star` field.
     public function display($like)
     {
-        return $like == 1 ? "<i class=\"fa fa-star\"></i>" : "<i class=\"fa fa-star-o\"></i>";
+        return $like == 1 ? "<i class=\"fa fa-star text-warning\"></i>" : "<i class=\"fa fa-star-o\"></i>";
     }
 }
