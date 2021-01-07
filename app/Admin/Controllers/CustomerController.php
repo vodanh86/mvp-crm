@@ -32,7 +32,7 @@ class CustomerController extends AdminController
     {
         $grid = new Grid(new Customer());
         $grid->column('name', __('Name'))->display(function () {
-            return "<a href='customers/" . $this->id . "' style='white-space: pre;'>$this->name</a>";
+            return "<a href='customers/" . $this->id . "' style=''>$this->name</a>";
         })->filter('like')->sortable()->setAttributes(['width' => ' 240px']);
         $grid->column('phone_number', __('Số điện thoại'))->display(function ($title) {
             return "<a href='tel:" . preg_replace('/\s+/', '', $title) . "' style='white-space: pre;'>$title</a>";
