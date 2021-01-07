@@ -115,7 +115,7 @@ class CustomerController extends AdminController
         $grid->column('like')->action(StarCustomer::class);
 
         //$grid->column('like', __('Quan tâm'))->editable('select', Constant::FAVORITE);
-        $grid->column('end_date', __('Ngày cuối HĐ'))->filter('range')->hide();
+        $grid->column('end_date', __('Ngày cuối HĐ'))->filter('range');
         
         $grid->model()->orderBy('like', 'DESC');
         $grid->model()->orderBy('id', 'DESC');
