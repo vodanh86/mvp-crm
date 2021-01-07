@@ -84,6 +84,9 @@ class CustomerController extends AdminController
             $grid->pt_status('Trạng thái PT')->display(function($show) {
                 return $show;
             })->filter(Constant::CUSTOMER_STATUS)->sortable()->editable('select', Constant::CUSTOMER_STATUS);
+            $grid->tools(function (Grid\Tools $tools) {
+                $tools->append(new BatchReplicate());
+            });
         } 
         else {
             $grid->status('Trạng thái')->display(function($show) {

@@ -1,18 +1,18 @@
 <canvas id="saleChart" width="400" height="400"></canvas>
-<?php 
+<?php
 use App\Models\AuthUser;
 
 $label = array();
 $countAll = array();
-foreach($count as $sale){
+foreach ($count as $sale) {
     $user = AuthUser::find($sale["sale_id"]);
-    if ($user){
+    if ($user) {
         $label[] = $user->name;
     } else {
         $label[] = "None";
     }
     $countAll[] = $sale["total"];
-} 
+}
 ?>
 <script>
 $(function () {
@@ -20,38 +20,68 @@ $(function () {
     var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: <?= json_encode($label) ?>,
+            labels: <?=json_encode($label)?>,
             datasets: [{
                 label: 'Số lượng người theo sale',
                 data: <?= json_encode($countAll)?>,
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255,99,132,1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
-            }]
+            backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 99, 132, 0.2)'
+            ],
+            borderColor: [
+            'rgba(255,99,132,1)',
+            'rgba(255,99,132,1)',
+            'rgba(255,99,132,1)',
+            'rgba(255,99,132,1)',
+            'rgba(255,99,132,1)',
+            'rgba(255,99,132,1)'
+            ],
+            borderWidth: 2
         },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero:true
-                    }
-                }]
-            }
+        {
+            label: '# of Votes 2',
+            data: [15, 19, 3, 5, 2, 3],
+            backgroundColor: [
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+            'rgba(255, 159, 64, 1)',
+            'rgba(255, 159, 64, 1)',
+            'rgba(255, 159, 64, 1)',
+            'rgba(255, 159, 64, 1)',
+            'rgba(255, 159, 64, 1)',
+            'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 2
         }
+        ]
+    },
+    options: {
+        scales: {
+        yAxes: [{
+            stacked: true,
+            ticks: {
+            beginAtZero: true
+            }
+        }],
+        xAxes: [{
+            stacked: true,
+            ticks: {
+            beginAtZero: true
+            }
+        }]
+
+        }
+    }
     });
 });
 </script>
