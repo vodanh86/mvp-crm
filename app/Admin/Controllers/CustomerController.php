@@ -207,7 +207,11 @@ class CustomerController extends AdminController
             $form->text('phone_number', __('Phone number'));
             $form->select('block_no', __('Toà nhà'))->options(Constant::BLOCK)->setWidth(2, 2);
             $form->select('telco', __('Nhà mạng'))->options(Constant::TELCO)->setWidth(2, 2);
-            $form->select('sale_id', __('Nhân viên chăm sóc'))->options(AuthUser::all()->pluck('name','id'))->default(Admin::user()->id);
+            if(Admin::user()->isRole('Pt') || Admin::user()->isRole('Fm')){
+                $form->select('pt_id', __('Nhân viên chăm sóc'))->options(AuthUser::all()->pluck('name','id'))->default(Admin::user()->id);
+            } else {
+                $form->select('sale_id', __('Nhân viên chăm sóc'))->options(AuthUser::all()->pluck('name','id'))->default(Admin::user()->id);
+            }
         //}
 
         $form->text('setup_at', __('Lịch hẹn gặp'));
