@@ -4,7 +4,8 @@ namespace App\Admin\Controllers;
 
 use App\Models\Customer;
 use App\Models\AuthUser;
-use App\Admin\Actions\Post\BatchReplicate;
+use App\Admin\Actions\Post\PtAssign;
+use App\Admin\Actions\Post\SaleAssign;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -30,6 +31,7 @@ class CustomerController extends AdminController
      */
     protected function grid()
     {
+        $key_id = "sale_id";
         $grid = new Grid(new Customer());
         $grid->column('name', __('Name'))->display(function () {
             return "<a href='customers/" . $this->id . "' style=''>$this->name</a>";
@@ -37,116 +39,119 @@ class CustomerController extends AdminController
         $grid->column('phone_number', __('Số điện thoại'))->display(function ($title) {
             return "<a href='tel:" . preg_replace('/\s+/', '', $title) . "' style='white-space: pre;'>$title</a>";
         })->filter('like');
-        $grid->block_no('Toà nhà')->display(function($show) {
-            if (isset($show)){
-                return Constant::BLOCK[$show];
+        if (Admin::user()->isRole('Sale') || Admin::user()->isRole('Sm') || Admin::user()->isAdministrator()){
+            $grid->block_no('Toà nhà')->display(function($show) {
+                if (isset($show)){
+                    return Constant::BLOCK[$show];
+                }
+            })->filter(Constant::BLOCK)->sortable();
+
+            $grid->telco('Nhà mạng')->display(function($show) {
+                if (isset($show)){
+                    return Constant::TELCO[$show];
+                }
+            })->filter(Constant::TELCO)->sortable()->hide();
+
+            $grid->status('Trạng thái')->display(function($show) {
+                return $show;
+            })->filter(Constant::CUSTOMER_STATUS)->sortable()->editable('select', Constant::CUSTOMER_STATUS);
+
+            $grid->source('Nguồn')->display(function($show) {
+                if (isset($show)){
+                    return Constant::SOURCE[$show];
+                }
+            })->filter(Constant::SOURCE)->sortable();
+
+            $grid->column('setup_at', __('Ngày hẹn'))->sortable()->editable();
+            $grid->column('plan', __('Plan'))->editable();
+            $grid->column('note', __('Note'))->editable()->setAttributes(['width' => ' 240px']);
+            $grid->column('like')->action(StarCustomer::class);
+            //$grid->column('like', __('Quan tâm'))->editable('select', Constant::FAVORITE);
+            $grid->column('end_date', __('Ngày cuối HĐ'))->filter('range')->setAttributes(['width' => ' 100px']);
+            if (Admin::user()->isRole('Sale')) {
+                $grid->model()->where('sale_id', '=', Admin::user()->id);
+                $grid->disableActions();
+            } else {
+                $grid->sale_id('Nhân viên Sale')->display(function($formalityAreaId) {
+                    $sale = AuthUser::find($formalityAreaId);
+                    if($sale){
+                        return $sale->name;
+                    }
+                })->filter(AuthUser::all()->pluck('name', 'id')->toArray());
+                $grid->pt_status('Trạng thái PT')->display(function($show) {
+                    return $show;
+                })->filter(Constant::CUSTOMER_STATUS)->sortable()->editable('select', Constant::CUSTOMER_STATUS)->hide();
+
+                $grid->tools(function (Grid\Tools $tools) {
+                    $tools->append(new SaleAssign());
+                });
             }
-        })->filter(Constant::BLOCK)->sortable();
-        $grid->telco('Nhà mạng')->display(function($show) {
-            if (isset($show)){
-                return Constant::TELCO[$show];
+            $grid->filter(function($filter){
+                //$filter->notIn('sale_id', "Sale")->multipleSelect(AuthUser::all()->pluck('name', 'id')->toArray());
+                $filter->where(function ($query) {
+                    switch ($this->input) {
+                        case 'yes':
+                            // custom complex query if the 'yes' option is selected
+                            $query->whereNotNull('sale_id');
+                            break;
+                        case 'no':
+                            $query->whereNull('sale_id');
+                            break;
+                    }
+                }, 'Nhân viên chăm sóc', 'name_for_url_shortcut')->radio([
+                    '' => 'Tất cả',
+                    'yes' => 'Đang chăm sóc',
+                    'no' => 'Chưa chăm sóc',
+                ]);
+            });
+        } elseif (Admin::user()->isRole('Pt') || Admin::user()->isRole('Fm')) {
+            $key_id = "pt_id";
+            $grid->pt_status('Trạng thái PT')->display(function($show) {
+                return $show;
+            })->filter(Constant::CUSTOMER_STATUS)->sortable()->editable('select', Constant::CUSTOMER_STATUS);
+            $grid->column('pt_setup_at', __('Ngày hẹn'))->sortable()->editable();
+            $grid->column('plan', __('Gói dịch vụ'))->editable();
+            $grid->column('pt_note', __('Note'))->editable();
+            $grid->column('end_date', __('Ngày cuối HĐ'))->filter('range')->hide();
+            if (Admin::user()->isRole('Pt')) {
+                $grid->model()->where('pt_id', '=', Admin::user()->id);
+                $grid->disableActions();
+            } else {
+                $grid->model()->where('status', '=', 4);
+                $grid->pt_id('Nhân viên Pt')->display(function($formalityAreaId) {
+                    $pt = AuthUser::find($formalityAreaId);
+                    if($pt){
+                        return $pt->name;
+                    }
+                })->filter(AuthUser::all()->pluck('name', 'id')->toArray());
+                $grid->tools(function (Grid\Tools $tools) {
+                    $tools->append(new PtAssign());
+                });
             }
-        })->filter(Constant::TELCO)->sortable()->hide();
-        if ( Admin::user()->isAdministrator()) {
-            $grid->status('Trạng thái')->display(function($show) {
-                return $show;
-            })->filter(Constant::CUSTOMER_STATUS)->sortable()->editable('select', Constant::CUSTOMER_STATUS);
-
-            $grid->pt_status('Trạng thái PT')->display(function($show) {
-                return $show;
-            })->filter(Constant::CUSTOMER_STATUS)->sortable()->editable('select', Constant::CUSTOMER_STATUS);
-            
-            $grid->tools(function (Grid\Tools $tools) {
-                $tools->append(new BatchReplicate());
-            });
-        } elseif (Admin::user()->isRole('Editor')){
-            $grid->model()->where('sale_id', '=', Admin::user()->id);
-            $grid->actions(function ($actions) {
-                $actions->disableDelete();
-            });
-
-            $grid->status('Trạng thái')->display(function($show) {
-                return $show;
-            })->filter(Constant::CUSTOMER_STATUS)->sortable()->editable('select', Constant::CUSTOMER_STATUS);
-        } elseif (Admin::user()->isRole('Pt')){
-            $grid->model()->where('sale_id', '=', Admin::user()->id);
-            $grid->model()->where('status', '=', 4);
-            $grid->actions(function ($actions) {
-                $actions->disableDelete();
-            });
-
-            $grid->pt_status('Trạng thái PT')->display(function($show) {
-                return $show;
-            })->filter(Constant::CUSTOMER_STATUS)->sortable()->editable('select', Constant::CUSTOMER_STATUS);
-        } elseif (Admin::user()->isRole('Fm')){
-            $grid->model()->where('status', '=', 4);
-
-            $grid->pt_status('Trạng thái PT')->display(function($show) {
-                return $show;
-            })->filter(Constant::CUSTOMER_STATUS)->sortable()->editable('select', Constant::CUSTOMER_STATUS);
-            $grid->tools(function (Grid\Tools $tools) {
-                $tools->append(new BatchReplicate());
-            });
-        } 
-        else {
-            $grid->status('Trạng thái')->display(function($show) {
-                return $show;
-            })->filter(Constant::CUSTOMER_STATUS)->sortable()->editable('select', Constant::CUSTOMER_STATUS);
-
-            $grid->pt_status('Trạng thái PT')->display(function($show) {
-                return $show;
-            })->filter(Constant::CUSTOMER_STATUS)->sortable()->editable('select', Constant::CUSTOMER_STATUS);
-            
-            $grid->tools(function (Grid\Tools $tools) {
-                $tools->append(new BatchReplicate());
+            $grid->filter(function($filter){
+                //$filter->notIn('sale_id', "Sale")->multipleSelect(AuthUser::all()->pluck('name', 'id')->toArray());
+                $filter->where(function ($query) {
+                    switch ($this->input) {
+                        case 'yes':
+                            // custom complex query if the 'yes' option is selected
+                            $query->whereNotNull('pt_id');
+                            break;
+                        case 'no':
+                            $query->whereNull('pt_id');
+                            break;
+                    }
+                }, 'Nhân viên chăm sóc', 'name_for_url_shortcut')->radio([
+                    '' => 'Tất cả',
+                    'yes' => 'Đang chăm sóc',
+                    'no' => 'Chưa chăm sóc',
+                ]);
             });
         }
-        $grid->source('Nguồn')->display(function($show) {
-            if (isset($show)){
-                return Constant::SOURCE[$show];
-            }
-        })->filter(Constant::SOURCE)->sortable();
-        $grid->column('setup_at', __('Ngày hẹn'))->sortable()->editable();
-        $grid->column('plan', __('Plan'))->editable();
-        $grid->column('note', __('Note'))->editable()->setAttributes(['width' => ' 240px']);
-        $grid->sale_id('Nhân viên')->display(function($formalityAreaId) {
-            $formalityArea = AuthUser::find($formalityAreaId);
-            if($formalityArea){
-                return $formalityArea->name;
-            }
-        })->filter(AuthUser::all()->pluck('name', 'id')->toArray());
-        $grid->column('like')->action(StarCustomer::class);
-
-        //$grid->column('like', __('Quan tâm'))->editable('select', Constant::FAVORITE);
-        $grid->column('end_date', __('Ngày cuối HĐ'))->filter('range');
-        
         $grid->model()->orderBy('like', 'DESC');
         $grid->model()->orderBy('id', 'DESC');
         $grid->exporter(new ExcelExpoter());
 
         $grid->quickSearch('phone_number', 'name');
-
-        $grid->filter(function($filter){
-            //$filter->notIn('sale_id', "Sale")->multipleSelect(AuthUser::all()->pluck('name', 'id')->toArray());
-            $filter->where(function ($query) {
-                switch ($this->input) {
-                    case 'yes':
-                        // custom complex query if the 'yes' option is selected
-                        $query->whereNotNull('sale_id');
-                        break;
-                    case 'no':
-                        $query->whereNull('sale_id');
-                        break;
-                }
-            }, 'Nhân viên chăm sóc', 'name_for_url_shortcut')->radio([
-                '' => 'Tất cả',
-                'yes' => 'Đang chăm sóc',
-                'no' => 'Chưa chăm sóc',
-            ]);
-            
-        });
-        
-
         return $grid;
     }
 
