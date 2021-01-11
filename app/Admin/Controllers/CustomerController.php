@@ -57,10 +57,8 @@ class CustomerController extends AdminController
             })->filter(Constant::CUSTOMER_STATUS)->sortable()->editable('select', Constant::CUSTOMER_STATUS);
 
             $grid->source('Nguồn')->display(function($show) {
-                if (isset($show)){
-                    return Constant::SOURCE[$show];
-                }
-            })->filter(Constant::SOURCE)->sortable();
+                return $show;
+            })->filter(Constant::SOURCE)->sortable()->editable('select', Constant::SOURCE);
 
             $grid->column('setup_at', __('Ngày hẹn'))->sortable()->editable();
             $grid->column('plan', __('Plan'))->editable();
@@ -70,7 +68,9 @@ class CustomerController extends AdminController
             $grid->column('end_date', __('Ngày cuối HĐ'))->filter('range')->setAttributes(['width' => ' 100px']);
             if (Admin::user()->isRole('Sale')) {
                 $grid->model()->where('sale_id', '=', Admin::user()->id);
-                $grid->disableActions();
+                if (!Admin::user()->isAdministrator()){
+                    $grid->disableActions();
+                }
             } else {
                 $grid->sale_id('Nhân viên Sale')->display(function($formalityAreaId) {
                     $sale = AuthUser::find($formalityAreaId);
