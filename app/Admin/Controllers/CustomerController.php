@@ -218,9 +218,11 @@ class CustomerController extends AdminController
         //}
 
         $form->text('setup_at', __('Lịch hẹn gặp'));
+        $form->text('pt_setup_at', __('Lịch PT hẹn gặp'));
         $form->text('plan', __('Gói hiện tại'));
         $form->select('source', __('Nguồn khách'))->options(Constant::SOURCE)->setWidth(2, 2);
         $form->text('note', __('Ghi chú'));
+        $form->text('pt_note', __('PT Ghi chú'));
         $form->date('end_date', __('Ngày hết hạn'));
         if (Admin::user()->isRole('Pt') || Admin::user()->isRole('Fm')){
             $form->select('pt_status', __('Trạng thái PT'))->options(Constant::CUSTOMER_STATUS)->setWidth(2, 2);
