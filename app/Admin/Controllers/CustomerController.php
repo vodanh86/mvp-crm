@@ -68,7 +68,6 @@ class CustomerController extends AdminController
             $grid->column('end_date', __('Ngày cuối HĐ'))->filter('range')->setAttributes(['width' => ' 100px']);
             if (Admin::user()->isRole('Sale')) {
                 $grid->model()->where('sale_id', '=', Admin::user()->id);
-                $grid->disableActions();
                 if (Admin::user()->isAdministrator()){
                     $grid->tools(function (Grid\Tools $tools) {
                         $tools->append(new SaleAssign());
