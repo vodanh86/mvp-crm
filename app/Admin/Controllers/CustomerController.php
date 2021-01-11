@@ -67,11 +67,12 @@ class CustomerController extends AdminController
             //$grid->column('like', __('Quan tâm'))->editable('select', Constant::FAVORITE);
             $grid->column('end_date', __('Ngày cuối HĐ'))->filter('range')->setAttributes(['width' => ' 100px']);
             if (Admin::user()->isRole('Sale')) {
-                $grid->model()->where('sale_id', '=', Admin::user()->id);
                 if (Admin::user()->isAdministrator()){
                     $grid->tools(function (Grid\Tools $tools) {
                         $tools->append(new SaleAssign());
                     });
+                } else {
+                    $grid->model()->where('sale_id', '=', Admin::user()->id);
                 }
             } else {
                 $grid->sale_id('Nhân viên Sale')->display(function($formalityAreaId) {
