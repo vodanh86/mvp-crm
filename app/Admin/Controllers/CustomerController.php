@@ -115,6 +115,7 @@ class CustomerController extends AdminController
             $grid->column('pt_setup_at', __('Ngày hẹn'))->sortable()->editable();
             $grid->column('plan', __('Gói dịch vụ'))->editable();
             $grid->column('pt_note', __('Note'))->editable();
+            $grid->column('like')->action(StarCustomer::class);
             $grid->column('end_date', __('Ngày cuối HĐ'))->filter('range')->hide();
             if (Admin::user()->isRole('Pt')) {
                 $grid->model()->where('pt_id', '=', Admin::user()->id);
