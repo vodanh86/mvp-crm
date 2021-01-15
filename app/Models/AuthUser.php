@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AuthUser extends Model
 {
-    protected $table = 'admin_users';
+    protected $table = 'users';
 
 	protected $hidden = [
     ];

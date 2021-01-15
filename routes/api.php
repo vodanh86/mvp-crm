@@ -20,3 +20,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('formalityOps', 'FormalityOpsController@index');
 Route::get('formalityArea', 'FormalityAreaController@index');
 Route::get('unit', 'UnitController@index');
+
+Route::post('login', 'APIController@login');
+Route::group(['middleware' => 'auth.jwt'], function () {
+    Route::get('logout', 'APIController@logout');
+    Route::get('users', 'UserController@index');
+    Route::get('customers', 'CustomerController@index');
+});
