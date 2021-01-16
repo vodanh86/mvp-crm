@@ -27,4 +27,5 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('users', 'UserController@index');
     Route::get('customers', 'CustomerController@index');
     Route::get('plans', 'PlanController@index');
+    Route::get('customer/{id}', 'CustomerController@detail');
 });
