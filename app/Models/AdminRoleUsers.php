@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Media extends Model
+class AdminRoleUsers extends Model
 {
-    protected $table = 'media';
+    protected $table = 'admin_role_users';
 
 	protected $hidden = [
     ];
