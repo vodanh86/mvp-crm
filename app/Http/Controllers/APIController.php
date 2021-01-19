@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use JWTAuth;
 use App\User;
 use Illuminate\Http\Request;
+use App\Models\AdminRoleUsers;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class APIController extends Controller
@@ -20,8 +21,8 @@ class APIController extends Controller
      */
     public function login(Request $request)
     {
-        $input = $request->only('username', 'password');
         $token = null;
+        $input = $request->only('username', 'password');
 
         if (!$token = JWTAuth::attempt($input)) {
             return response()->json([
@@ -30,8 +31,10 @@ class APIController extends Controller
             ], 401);
         }
 
+        $adminRoleUsers = AdminRoleUsers::where("user_id", auth()->user()->id)->first();
         return response()->json([
             'data' => auth()->user(),
+            'role' => $adminRoleUsers->role_id,
             'status' => true,
             'token' => $token,
             'error' => 0
