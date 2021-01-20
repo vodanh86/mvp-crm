@@ -1,4 +1,5 @@
 <canvas id="statusChart" width="400" height="400"></canvas>
+<h3>Báo cáo trạng thái theo trạng thái</h3>
 <?php 
 $label = array();
 $countAll = array();

@@ -1,4 +1,5 @@
 <canvas id="saleChart" width="400" height="400"></canvas>
+<h3>Báo cáo trạng thái theo sale</h3>
 <?php
 use App\Models\AuthUser;
 

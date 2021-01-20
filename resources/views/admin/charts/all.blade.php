@@ -1,4 +1,5 @@
 <canvas id="allChart" width="400" height="400"></canvas>
+<h3>Báo cáo trạng thái theo toà nhà</h3>
 <?php 
 $label = array();
 $countAll = array();
