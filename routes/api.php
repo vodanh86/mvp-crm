@@ -28,6 +28,7 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('customers', 'CustomerController@index');
     Route::get('plans', 'PlanController@index');
     Route::post('customer/{id}', 'CustomerController@edit');
+    Route::get('customer/status', 'CustomerController@status');
     Route::post('user/{id}', 'UserController@edit');
     Route::get('customer/{id}', 'CustomerController@detail');
 });

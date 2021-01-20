@@ -21,6 +21,22 @@ class CustomerController extends Controller
         return response()->json($result, 200);
     }
 
+    public function status()
+    {
+        $adminRoleUsers = AdminRoleUsers::where("user_id", auth()->user()->id)->first();
+        if($adminRoleUsers->role_id == 4 || $adminRoleUsers->role_id == 5){
+            $customers = Customer::where("pt_id", auth()->user()->id)->groupBy('status')
+                            ->selectRaw('count(*) as total, status')
+                            ->get();
+        } else {
+            $customers = Customer::where("sale_id", auth()->user()->id)->groupBy('status')
+                            ->selectRaw('count(*) as total, status')
+                            ->get();
+        }
+        $result = array("status" => 110, "data" => $customers);
+        return response()->json($result, 200);
+    }
+
     public function detail($id)
     {
         $customer = Customer::find($id);
