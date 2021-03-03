@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model
+class Appointment extends Model
 {
-    protected $table = 'posts';
+    protected $table = 'appointment';
 
 	protected $hidden = [
     ];
