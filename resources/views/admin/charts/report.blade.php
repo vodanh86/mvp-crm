@@ -60,7 +60,6 @@ foreach ($countSetup as $app) {
 foreach ($countDone as $app) {
     $countTmpDone[$app["app_date"]] = $app["total"];
 }
-var_dump($countTmpDone);
 
 for($i = $begin; $i <= $end; $i->modify('+1 day')){
     $label[] = $i->format("Y-m-d");
