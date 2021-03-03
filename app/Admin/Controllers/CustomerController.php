@@ -40,9 +40,9 @@ class CustomerController extends AdminController
             return "<a href='tel:" . preg_replace('/\s+/', '', $title) . "' style='white-space: pre;'>$title</a>";
         })->filter('like');
         if (Admin::user()->isRole('Sale') || Admin::user()->isRole('Sm') || Admin::user()->isAdministrator()){
-            $grid->block_no('Toà nhà')->display(function($show) {
-                if (isset($show)){
-                    return Constant::BLOCK[$show];
+            $grid->block_no('Toà nhà')->display(function($block_id) {
+                if (isset($block_id) && array_key_exists($block_id, Constant::BLOCK)){
+                    return Constant::BLOCK[$block_id];
                 }
             })->filter(Constant::BLOCK)->sortable();
 
