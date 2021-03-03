@@ -28,10 +28,7 @@
         </div>
     </div>
 </form>
-<canvas id="allChart" width="400" height="90"></canvas>
-<canvas id="showChart" width="400" height="90"></canvas>
-<canvas id="setupChart" width="400" height="90"></canvas>
-<canvas id="doneChart" width="400" height="90"></canvas>
+<canvas id="allChart" width="400" height="100"></canvas>
 <?php 
 $label = array();
 $countAll = array();
@@ -86,21 +83,42 @@ for($i = $begin; $i <= $end; $i->modify('+1 day')){
 }
 ?>
 <script>
-function createChart(div, title, data, color){
-    var ctx = document.getElementById(div).getContext('2d');
+$(function () {
+    var ctx = document.getElementById("allChart").getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: <?= json_encode($label) ?>,
-            datasets: [{
-                label: title,
-                lineTension: 0,  
-                data: data,
-                backgroundColor: color,
-                borderColor: color,
-                borderWidth: 1
-            }]
-        },
+				labels: <?= json_encode($label)?>,
+                datasets: [{
+					label: 'Số appointment',
+                    lineTension: 0,  
+					backgroundColor: "rgb(54, 162, 235)",
+					borderColor: "rgb(54, 162, 235)",
+					data: <?= json_encode($countAll)?>,
+					fill: false,
+				}, {
+					label: 'Số show',
+					fill: false,
+                    lineTension: 0,  
+					backgroundColor: "rgb(75, 192, 192)",
+					borderColor: "rgb(75, 192, 192)",
+					data: <?= json_encode($countAllShow)?>,
+				}, {
+					label: 'Số setup',
+					fill: false,
+                    lineTension: 0,  
+					backgroundColor: "rgb(255, 159, 64)",
+					borderColor: "rgb(255, 159, 64)",
+					data: <?= json_encode($countAllSetup)?>,
+				}, {
+					label: 'Số done',
+					fill: false,
+                    lineTension: 0,  
+					backgroundColor: "rgb(153, 102, 255)",
+					borderColor: "rgb(153, 102, 255)",
+					data: <?= json_encode($countAllDone)?>,
+				}]
+			},
         options: {
             scales: {
                 yAxes: [{
@@ -111,11 +129,5 @@ function createChart(div, title, data, color){
             }
         }
     });
-}
-$(function () {
-    createChart("allChart", "số lượng appointment", <?= json_encode($countAll)?>, "rgb(54, 162, 235)");
-    createChart("showChart", "Số lượng show", <?= json_encode($countAllShow)?>, "rgb(75, 192, 192)");
-    createChart("setupChart", "số lượng setup", <?= json_encode($countAllSetup)?>, "rgb(255, 159, 64)");
-    createChart("doneChart", "số lượng done", <?= json_encode($countAllDone)?>, "rgb(75, 192, 192)");
 });
 </script>

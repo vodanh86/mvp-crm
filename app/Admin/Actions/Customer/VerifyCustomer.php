@@ -21,6 +21,9 @@ class VerifyCustomer extends RowAction
         if (Admin::user()->isRole('Sm') || Admin::user()->isRole('administrator') ) {
             if ($appointment->verify != 1){
                 $appointment->verify = 1;
+                if ($appointment->type == 1){
+                    $appointment->show = 1;
+                }
             } else {
                 $appointment->verify = 0;
             }

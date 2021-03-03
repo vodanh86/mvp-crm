@@ -19,6 +19,7 @@ abstract class Constant
         'off' => ['value' => 0, 'text' => '&nbsp;&nbsp;Ẩn&nbsp;&nbsp;', 'color' => 'danger'],
     );
     const BANNER_POSITION = array(0 => 'Trái', 1 => 'Phải');
+    const APP_TYPE = array(0 => 'Lịch hẹn', 1 => 'Show');
     const POST_CATEGORY = array(0 => 'Trang chủ', 1 => 'Điểm đến',
                             2 => "Cảm hứng", 3 => "Sự kiện", 4 => "Tin tức", 5 => "Thư viện Media");
     const POST_TYPE = array(0 => 'Di tích & Danh lam', 1 => 'Cơ quan hành chính',

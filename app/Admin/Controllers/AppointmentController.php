@@ -43,6 +43,11 @@ class AppointmentController extends AdminController
                 return $sale->name;
             }
         })->filter(AuthUser::all()->pluck('name', 'id')->toArray());
+        $grid->type('Loại')->display(function($type) {
+            if (isset($type)){
+                return Constant::APP_TYPE[$type];
+            }
+        })->filter(Constant::BLOCK)->sortable();
         $grid->column('verify', __('Xác nhận'))->action(VerifyCustomer::class);
         $grid->column('show', __('Show'))->action(ShowCustomer::class);
         $grid->column('setup', __('Setup'))->action(SetupCustomer::class);
@@ -95,6 +100,7 @@ class AppointmentController extends AdminController
         $form->date('app_date', __('App date'))->default(date('Y-m-d'));
         $form->text('app_time', __('App time'));
         $form->text('note', __('Note'));
+        $form->select('type', __('Loại hẹn'))->options(Constant::APP_TYPE)->setWidth(2, 2);
         $form->select('sale_id', __('Nhân viên chăm sóc'))->options(AuthUser::all()->pluck('name','id'))->default(Admin::user()->id);
         $form->text('done', __('Done'));
         return $form;

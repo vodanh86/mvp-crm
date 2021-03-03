@@ -65,6 +65,7 @@ class HomeController extends Controller
         $count =  Appointment::groupBy('app_date')
             ->selectRaw('count(*) as total, app_date')
             ->where('app_date', '>=', $dayBefore)
+            ->where("type", '=', 0)
             ->get();
         
         $countShow = Appointment::groupBy('app_date')
@@ -89,6 +90,7 @@ class HomeController extends Controller
             $count =  Appointment::groupBy('app_date')
             ->selectRaw('count(*) as total, app_date')
             ->where('app_date', '>=', $dayBefore)
+            ->where("type", '=', 0)
             ->where("sale_id", '=', $sale_id)
             ->get();
 
