@@ -8,7 +8,7 @@ abstract class Constant
     const TELCO = array(0 => 'Viettel', 1 => "Vinafone", 2 => "Mobifone", 3 => "Khác");
     const BLOCK = array(
         0 => 'N02 T3', 1 => "N03 T3-T4", 2 => "N03 T1", 3 => "N01 T4", 4 => "N02 T1", 5 => "N03 T2", 6 => "N01 T1",
-        7 => "N04 AA-CC", 8 => "N01 T5", 100 => "Khác"
+        7 => "N04 AA-CC", 8 => "N01 T5", 9 => "N02 T2", 10 => "N01 T8", 12 => "N03 T3", 100 => "Khác"
     );
     const CUSTOMER_STATUS = array(
         0 => 'Chưa liên hệ', 1 => "Chưa có nhu cầu", 2 => "Đã di chuyển", 3 => "Đang hẹn lên",
@@ -16,7 +16,7 @@ abstract class Constant
     );
     const SOURCE = array(
         0 => 'Excel', 1 => 'Facebook', 2 => 'Page', 3 => 'Voucher', 4 => 'BR', 5 => 'Miss Sale', 6 => 'Hội viên', 7 => "Hotline",
-        100 => "Khác"
+        8 => 'Khách Cali', 100 => "Khác"
     );
     const SHOW_STATUS = array(0 => 'Ẩn', 1 => 'Hiện');
     const FAVORITE = array(0 => 'Không', 1 => 'Có');
@@ -43,6 +43,7 @@ abstract class Constant
         "index" => 0, "feeling" => 2, "map" => 1,
         "event" => 3, "news" => 4
     );
+
     const YES_NO_QUESTION = array(0 => "No", 1 => "Yes");
 
     const HOW_KNOWN_US = array(
