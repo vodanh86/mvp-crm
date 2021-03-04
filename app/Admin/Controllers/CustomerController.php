@@ -13,6 +13,7 @@ use Encore\Admin\Show;
 use Encore\Admin\Facades\Admin;
 use App\Admin\Extensions\ExcelExpoter;
 use App\Admin\Actions\Customer\StarCustomer;
+use App\Admin\Actions\Customer\GfpCustomer;
 
 
 class CustomerController extends AdminController
@@ -39,24 +40,24 @@ class CustomerController extends AdminController
         $grid->column('phone_number', __('Số điện thoại'))->display(function ($title) {
             return "<a href='tel:" . preg_replace('/\s+/', '', $title) . "' style='white-space: pre;'>$title</a>";
         })->filter('like');
-        if (Admin::user()->isRole('Sale') || Admin::user()->isRole('Sm') || Admin::user()->isAdministrator()){
-            $grid->block_no('Toà nhà')->display(function($block_id) {
-                if (isset($block_id) && array_key_exists($block_id, Constant::BLOCK)){
+        if (Admin::user()->isRole('Sale') || Admin::user()->isRole('Sm') || Admin::user()->isAdministrator()) {
+            $grid->block_no('Toà nhà')->display(function ($block_id) {
+                if (isset($block_id) && array_key_exists($block_id, Constant::BLOCK)) {
                     return Constant::BLOCK[$block_id];
                 }
             })->filter(Constant::BLOCK)->sortable();
 
-            $grid->telco('Nhà mạng')->display(function($show) {
-                if (isset($show)){
+            $grid->telco('Nhà mạng')->display(function ($show) {
+                if (isset($show)) {
                     return Constant::TELCO[$show];
                 }
             })->filter(Constant::TELCO)->sortable()->hide();
 
-            $grid->status('Trạng thái')->display(function($show) {
+            $grid->status('Trạng thái')->display(function ($show) {
                 return $show;
             })->filter(Constant::CUSTOMER_STATUS)->sortable()->editable('select', Constant::CUSTOMER_STATUS);
 
-            $grid->source('Nguồn')->display(function($show) {
+            $grid->source('Nguồn')->display(function ($show) {
                 return $show;
             })->filter(Constant::SOURCE)->sortable()->editable('select', Constant::SOURCE);
 
@@ -67,7 +68,7 @@ class CustomerController extends AdminController
             //$grid->column('like', __('Quan tâm'))->editable('select', Constant::FAVORITE);
             $grid->column('end_date', __('Ngày cuối HĐ'))->filter('range')->setAttributes(['width' => ' 100px']);
             if (Admin::user()->isRole('Sale')) {
-                if (Admin::user()->isAdministrator()){
+                if (Admin::user()->isAdministrator()) {
                     $grid->tools(function (Grid\Tools $tools) {
                         $tools->append(new SaleAssign());
                     });
@@ -75,13 +76,13 @@ class CustomerController extends AdminController
                     $grid->model()->where('sale_id', '=', Admin::user()->id);
                 }
             } else {
-                $grid->sale_id('Nhân viên Sale')->display(function($formalityAreaId) {
+                $grid->sale_id('Nhân viên Sale')->display(function ($formalityAreaId) {
                     $sale = AuthUser::find($formalityAreaId);
-                    if($sale){
+                    if ($sale) {
                         return $sale->name;
                     }
                 })->filter(AuthUser::all()->pluck('name', 'id')->toArray());
-                $grid->pt_status('Trạng thái PT')->display(function($show) {
+                $grid->pt_status('Trạng thái PT')->display(function ($show) {
                     return $show;
                 })->filter(Constant::CUSTOMER_STATUS)->sortable()->editable('select', Constant::CUSTOMER_STATUS)->hide();
 
@@ -89,7 +90,7 @@ class CustomerController extends AdminController
                     $tools->append(new SaleAssign());
                 });
             }
-            $grid->filter(function($filter){
+            $grid->filter(function ($filter) {
                 //$filter->notIn('sale_id', "Sale")->multipleSelect(AuthUser::all()->pluck('name', 'id')->toArray());
                 $filter->where(function ($query) {
                     switch ($this->input) {
@@ -109,7 +110,7 @@ class CustomerController extends AdminController
             });
         } elseif (Admin::user()->isRole('Pt') || Admin::user()->isRole('Fm')) {
             $key_id = "pt_id";
-            $grid->pt_status('Trạng thái PT')->display(function($show) {
+            $grid->pt_status('Trạng thái PT')->display(function ($show) {
                 return $show;
             })->filter(Constant::CUSTOMER_STATUS)->sortable()->editable('select', Constant::CUSTOMER_STATUS);
             $grid->column('pt_setup_at', __('Ngày hẹn'))->sortable()->editable();
@@ -122,9 +123,9 @@ class CustomerController extends AdminController
                 $grid->disableActions();
             } else {
                 $grid->model()->where('status', '=', 4);
-                $grid->pt_id('Nhân viên Pt')->display(function($formalityAreaId) {
+                $grid->pt_id('Nhân viên Pt')->display(function ($formalityAreaId) {
                     $pt = AuthUser::find($formalityAreaId);
-                    if($pt){
+                    if ($pt) {
                         return $pt->name;
                     }
                 })->filter(AuthUser::all()->pluck('name', 'id')->toArray());
@@ -132,7 +133,7 @@ class CustomerController extends AdminController
                     $tools->append(new PtAssign());
                 });
             }
-            $grid->filter(function($filter){
+            $grid->filter(function ($filter) {
                 //$filter->notIn('sale_id', "Sale")->multipleSelect(AuthUser::all()->pluck('name', 'id')->toArray());
                 $filter->where(function ($query) {
                     switch ($this->input) {
@@ -154,8 +155,11 @@ class CustomerController extends AdminController
         $grid->model()->orderBy('like', 'DESC');
         $grid->model()->orderBy('id', 'DESC');
         $grid->exporter(new ExcelExpoter());
-
         $grid->quickSearch('phone_number', 'name');
+        $customer_id = $this;
+        $grid->actions(function (Grid\Displayers\Actions $actions) {
+            $actions->add(new GfpCustomer($actions->row->id));
+        });
         return $grid;
     }
 
@@ -205,17 +209,17 @@ class CustomerController extends AdminController
             $form->select('telco', __('Nhà mạng'))->options(Constant::TELCO)->setWidth(2, 2)->readonly();
             $form->select('sale_id', __('Nhân viên chăm sóc'))->options(AuthUser::all()->pluck('name','id'))->readonly();
         } else {*/
-            $form->text('name', __('Name'));
-            //$form->datetime('birthday', __('Birthday'))->default(date('Y-m-d H:i:s'));
-            $form->text('room_no', __('Room no'));
-            $form->text('phone_number', __('Phone number'));
-            $form->select('block_no', __('Toà nhà'))->options(Constant::BLOCK)->setWidth(2, 2);
-            $form->select('telco', __('Nhà mạng'))->options(Constant::TELCO)->setWidth(2, 2);
-            if(Admin::user()->isRole('Pt') || Admin::user()->isRole('Fm')){
-                $form->select('pt_id', __('Nhân viên chăm sóc'))->options(AuthUser::all()->pluck('name','id'))->default(Admin::user()->id);
-            } else {
-                $form->select('sale_id', __('Nhân viên chăm sóc'))->options(AuthUser::all()->pluck('name','id'))->default(Admin::user()->id);
-            }
+        $form->text('name', __('Name'));
+        //$form->datetime('birthday', __('Birthday'))->default(date('Y-m-d H:i:s'));
+        $form->text('room_no', __('Room no'));
+        $form->text('phone_number', __('Phone number'));
+        $form->select('block_no', __('Toà nhà'))->options(Constant::BLOCK)->setWidth(2, 2);
+        $form->select('telco', __('Nhà mạng'))->options(Constant::TELCO)->setWidth(2, 2);
+        if (Admin::user()->isRole('Pt') || Admin::user()->isRole('Fm')) {
+            $form->select('pt_id', __('Nhân viên chăm sóc'))->options(AuthUser::all()->pluck('name', 'id'))->default(Admin::user()->id);
+        } else {
+            $form->select('sale_id', __('Nhân viên chăm sóc'))->options(AuthUser::all()->pluck('name', 'id'))->default(Admin::user()->id);
+        }
         //}
 
         $form->text('setup_at', __('Lịch hẹn gặp'));
@@ -225,15 +229,15 @@ class CustomerController extends AdminController
         $form->text('note', __('Ghi chú'));
         $form->text('pt_note', __('PT Ghi chú'));
         $form->date('end_date', __('Ngày hết hạn'));
-        if (Admin::user()->isRole('Pt') || Admin::user()->isRole('Fm')){
+        if (Admin::user()->isRole('Pt') || Admin::user()->isRole('Fm')) {
             $form->select('pt_status', __('Trạng thái PT'))->options(Constant::CUSTOMER_STATUS)->setWidth(2, 2);
-        } elseif (Admin::user()->isRole('Pt') || Admin::user()->isRole('Fm')){
+        } elseif (Admin::user()->isRole('Pt') || Admin::user()->isRole('Fm')) {
             $form->select('status', __('Trạng thái'))->options(Constant::CUSTOMER_STATUS)->setWidth(2, 2);
         } else {
             $form->select('status', __('Trạng thái'))->options(Constant::CUSTOMER_STATUS)->setWidth(2, 2);
             $form->select('pt_status', __('Trạng thái PT'))->options(Constant::CUSTOMER_STATUS)->setWidth(2, 2);
         }
-        
+
         $form->select('like', __('Quan tâm'))->options(Constant::FAVORITE)->setWidth(2, 2);
         return $form;
     }

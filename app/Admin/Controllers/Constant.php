@@ -43,4 +43,11 @@ abstract class Constant
         "index" => 0, "feeling" => 2, "map" => 1,
         "event" => 3, "news" => 4
     );
+
+    const YES_NO_QUESTION = array(0 => "No", 1 => "Yes");
+
+    const HOW_KNOWN_US = array(
+        0 => 'Bạn bè ', 1 => 'Hội viên cũ', 2 => 'Tài khoản liên kết', 3 => 'Bảng hiệu', 4 => 'tiếp thị từ xa', 5 => 'Báo, tạp chí',
+        6 => 'Tờ rơi', 7 => 'ti vi', 8 => 'trang web'
+    );
 }
