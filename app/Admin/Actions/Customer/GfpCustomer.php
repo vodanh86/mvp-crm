@@ -10,7 +10,7 @@ class GfpCustomer extends RowAction
     protected $id;
     protected $customerId;
     public $name = "Create gfp";
-//
+    //
     public function __construct($customerId)
     {
         $this->customerId = $customerId;
@@ -30,17 +30,17 @@ $('.grid-check-row').on('click', function () {
 SCRIPT;
     }
 
-//    public function render(Customer $customer)
-//    {
-//        Admin::script($this->script());
-//
-//        return '<a href="gfps/create?customer_id ='.$customer->id .'>create gfp</a>';
-//
-//    }
+    //    public function render(Customer $customer)
+    //    {
+    //        Admin::script($this->script());
+    //
+    //        return '<a href="gfps/create?customer_id ='.$customer->id .'>create gfp</a>';
+    //
+    //    }
 
     public function href()
     {
-        $link = "/admin/gfps/create?customer_id=".$this->customerId;
+        $link = "../admin/gfps/create?customer_id=" . $this->customerId;
         return $link;
     }
 
