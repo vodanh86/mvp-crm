@@ -11,4 +11,9 @@ class Gfp extends Model
     protected $hidden = [];
 
     protected $guarded = [];
+
+    protected $casts = [
+        'target' =>'json',
+    ];
+
 }
