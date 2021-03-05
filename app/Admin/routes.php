@@ -19,4 +19,5 @@ Route::group([
     $router->resource('posts', PostController::class);
     $router->resource('picture', MediaController::class);
     $router->resource('customers', CustomerController::class);
+    $router->resource('gfps', GfpController::class,['customer_id']);
 });
