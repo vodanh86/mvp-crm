@@ -64,7 +64,16 @@ class GfpController extends AdminController
         })->filter(Constant::YES_NO_QUESTION)->sortable()->editable('select', Constant::YES_NO_QUESTION);
 
         $grid->column('physical_condition', __('Có bệnh không'));
-        $grid->column('target', __('Mục tiêu'));
+        $grid->target('Mục tiêu')->display(function ($target){
+            if (is_array($target)){
+                $targetRaw = json_decode($target[0], true);
+                $target = [];
+                foreach ($targetRaw as $rawValue){
+                    $target[] = (int) $rawValue;;
+                }
+            }
+            return $target;
+        })->filter(Constant::GFP_TARGET_VALUE)->checkbox(Constant::GFP_TARGET_VALUE);
         $grid->column('how_often', __('Bao buổi 1 tuần'));
 
 
@@ -113,7 +122,8 @@ class GfpController extends AdminController
     {
         $form = new Form(new Gfp());
 
-        $form->select('sale_id', __('Nhân viên chăm sóc'))->options(AuthUser::all()->pluck('name', 'id'))->default(Admin::user()->id);
+        $form->select('sale_id', __('Nhân viên chăm sóc'))
+            ->options(AuthUser::all()->pluck('name', 'id'))->default(Admin::user()->id);
         // $form->number('sale_id', __('Sale id'));
         $form->datetime('date_time', __('Date time'))->default(date('Y-m-d H:i:s'));
         if (is_null($customerId)){
@@ -131,8 +141,13 @@ class GfpController extends AdminController
         //        $form->number('family_support', __('Family support'));
         $form->select('family_support', __('Gia đình có ủng hộ bạn đi tập không'))->options(Constant::YES_NO_QUESTION)->setWidth(2, 2);
         $form->text('physical_condition', __('Bạn có vấn đề gì về sức khoẻ không'));
-        $form->text('target', __('Mục tiêu tập luyện của Bạn'));
+        $form->checkbox('target', __('Mục tiêu tập luyện của Bạn'))
+            ->options(Constant::GFP_TARGET_VALUE);
         $form->number('how_often', __('Bạn có thể đến phòng tập bao buổi 1 tuần'));
+
+        $form->saving(function (Form $form) {
+            $form->target = json_encode($form->target);
+        });
 
         return $form;
     }

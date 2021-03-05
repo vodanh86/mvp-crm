@@ -40,7 +40,7 @@ SCRIPT;
 
     public function href()
     {
-        $link = "../admin/gfps/create?customer_id=" . $this->customerId;
+        $link = "../gfps/create?customer_id=" . $this->customerId;
         return $link;
     }
 
