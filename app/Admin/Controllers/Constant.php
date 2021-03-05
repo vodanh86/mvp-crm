@@ -15,8 +15,8 @@ abstract class Constant
         4 => "Khách cũ", 6 => "Đang tập chỗ khác", 7 => "Đang chăm sóc", 100 => "Khác"
     );
     const SOURCE = array(
-        0 => 'Excel', 1 => 'Facebook', 2 => 'Page', 3 => 'Voucher', 4 => 'BR', 5 => 'Miss Sale', 6 => 'Hội viên', 7 => "Hotline",
-        8 => 'Khách Cali', 100 => "Khác"
+        0 => 'Excel', 1 => 'Facebook', 2 => 'Page', 3 => 'Voucher', 4 => 'BR', 5 => 'Miss Sale',
+        6 => 'Hội viên', 7 => "Hotline", 8 => 'Khách Cali', 100 => "Khác"
     );
     const SHOW_STATUS = array(0 => 'Ẩn', 1 => 'Hiện');
     const FAVORITE = array(0 => 'Không', 1 => 'Có');
@@ -47,7 +47,12 @@ abstract class Constant
     const YES_NO_QUESTION = array(0 => "No", 1 => "Yes");
 
     const HOW_KNOWN_US = array(
-        0 => 'Bạn bè ', 1 => 'Hội viên cũ', 2 => 'Tài khoản liên kết', 3 => 'Bảng hiệu', 4 => 'tiếp thị từ xa', 5 => 'Báo, tạp chí',
-        6 => 'Tờ rơi', 7 => 'ti vi', 8 => 'trang web'
+        0 => 'Bạn bè ', 1 => 'Hội viên cũ', 2 => 'Tài khoản liên kết', 3 => 'Bảng hiệu', 4 => 'tiếp thị từ xa',
+        5 => 'Báo, tạp chí', 6 => 'Tờ rơi', 7 => 'ti vi', 8 => 'trang web'
+    );
+
+    const GFP_TARGET_VALUE = array(
+        0 => 'Tăng cân', 1 => 'Giảm cân', 2 => 'Tăng cường sức bền và dẻo dai', 3 => 'Tăng cường sinh lý',
+        4 => 'Tăng cường khả năng sinh sản', 5 => 'Cải thiện hệ tiêu hoá'
     );
 }
