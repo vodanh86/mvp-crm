@@ -16,7 +16,7 @@ abstract class Constant
     );
     const SOURCE = array(
         0 => 'Excel', 1 => 'Facebook', 2 => 'Page', 3 => 'Voucher', 4 => 'BR', 5 => 'Miss Sale',
-        6 => 'Hội viên', 7 => "Hotline", 8 => 'Khách Cali', 9 => 'club', 100 => "Khác"
+        6 => 'Hội viên', 7 => "Hotline", 8 => 'Khách Cali', 9 => 'Club', 100 => "Khác"
     );
     const SHOW_STATUS = array(0 => 'Ẩn', 1 => 'Hiện');
     const FAVORITE = array(0 => 'Không', 1 => 'Có');
