@@ -37,8 +37,12 @@ class GfpController extends AdminController
 //        $grid->column('id', __('Id'));
 
         $grid->customer_id('Khách Hàng')->display(function () {
-            $customer = Customer::find($this->customer_id)->get();
-            return "<a href='customers/" . $this->customer_id . "' style=''>{$customer['name']}</a>";
+            $customer = Customer::find(intval($this->customer_id));
+            if ($customer){
+                return "<a href='customers/" . $this->customer_id . "' style=''>". $customer->name. "</a>";
+            } else {
+                return "<a href='customers/" . $this->customer_id . "' style=''>". $this->customer_id. "</a>";
+            }
         })->sortable()->setAttributes(['width' => ' 200px']);
 
         $grid->column('date_time', __('Thời gian khách hàng đến'));
