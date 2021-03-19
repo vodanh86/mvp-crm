@@ -37,7 +37,7 @@ class GfpController extends AdminController
 //        $grid->column('id', __('Id'));
 
         $grid->customer_id('Khách Hàng')->display(function () {
-            $customer = Customer::all()->firstWhere('id',$this->customer_id)->only('name');
+            $customer = Customer::find($this->customer_id)->get();
             return "<a href='customers/" . $this->customer_id . "' style=''>{$customer['name']}</a>";
         })->sortable()->setAttributes(['width' => ' 200px']);
 
