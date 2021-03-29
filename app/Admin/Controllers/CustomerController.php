@@ -209,7 +209,7 @@ class CustomerController extends AdminController
             $form->select('telco', __('Nhà mạng'))->options(Constant::TELCO)->setWidth(2, 2)->readonly();
             $form->select('sale_id', __('Nhân viên chăm sóc'))->options(AuthUser::all()->pluck('name','id'))->readonly();
         } else {*/
-        $form->ckeditor('name', __('Name'));
+        $form->text('name', __('Name'));
         //$form->datetime('birthday', __('Birthday'))->default(date('Y-m-d H:i:s'));
         $form->text('room_no', __('Room no'));
         $form->text('phone_number', __('Phone number'));
