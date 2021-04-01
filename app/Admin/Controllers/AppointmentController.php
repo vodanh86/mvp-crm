@@ -2,8 +2,10 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Actions\Customer\GfpCustomer;
 use App\Models\Appointment;
 use App\Models\AuthUser;
+use App\Models\Customer;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
@@ -55,7 +57,13 @@ class AppointmentController extends AdminController
 
         if (!(Admin::user()->isRole('Sm') || Admin::user()->isRole('administrator'))) {
             $grid->model()->where('sale_id', '=', Admin::user()->id);
-        } 
+        }
+        $grid->actions(function (Grid\Displayers\Actions $actions) {
+            $customer = Customer::where('phone_number','=',$actions->row->phone_number)->first();
+            if($customer){
+                $actions->add(new GfpCustomer($customer->id));
+            }
+        });
 
         return $grid;
     }

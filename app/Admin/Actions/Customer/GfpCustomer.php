@@ -2,6 +2,7 @@
 
 namespace App\Admin\Actions\Customer;
 
+use App\Models\Gfp;
 use Encore\Admin\Actions\RowAction;
 
 
@@ -9,7 +10,7 @@ class GfpCustomer extends RowAction
 {
     protected $id;
     protected $customerId;
-    public $name = "Create gfp";
+    public $name = "Gfp";
     //
     public function __construct($customerId)
     {
@@ -40,7 +41,12 @@ SCRIPT;
 
     public function href()
     {
-        $link = "../admin/gfps/create?customer_id=" . $this->customerId;
+        $gfpRecord = Gfp::where('customer_id', '=', $this->customerId)->first();
+        if($gfpRecord != null){
+            $link = "../admin/gfps/{$gfpRecord->id}/edit";
+        }else {
+            $link = "../admin/gfps/create?customer_id=" . $this->customerId;
+        }
         return $link;
     }
 
