@@ -10,6 +10,7 @@ use Encore\Admin\Facades\Admin;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
+use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 use App\Admin\Actions\Customer\VerifyCustomer;
 use App\Admin\Actions\Customer\ShowCustomer;
@@ -96,15 +97,21 @@ class AppointmentController extends AdminController
 
     /**
      * Make a form builder.
-     *
+     * @param null $phoneNumber
      * @return Form
      */
-    protected function form()
+    protected function form($phoneNumber=null)
     {
         $form = new Form(new Appointment());
 
-        $form->text('name', __('Name'));
-        $form->text('phone_number', __('Phone number'));
+        if (is_null($phoneNumber)){
+            $form->text('name', __('Name'));
+            $form->text('phone_number', __('Phone number'));
+        }else{
+            $customer = Customer::all()->firstWhere('phone_number','=',$phoneNumber);
+            $form->text('name', __('Name'))->default($customer['name']);
+            $form->text('phone_number', __('Phone number'))->default($phoneNumber);
+        }
         $form->date('app_date', __('App date'))->default(date('Y-m-d'));
         $form->text('app_time', __('App time'));
         $form->text('note', __('Note'));
@@ -113,4 +120,14 @@ class AppointmentController extends AdminController
         $form->text('done', __('Done'));
         return $form;
     }
+
+    public function create(Content $content): Content
+    {
+        $phoneNumber = isset($_GET['key']) ? $_GET['key'] : null;
+        return $content
+            ->title($this->title())
+            ->description($this->description['create'] ?? trans('admin.create'))
+            ->body($this->form($phoneNumber));
+    }
+
 }

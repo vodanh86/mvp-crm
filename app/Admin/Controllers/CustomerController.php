@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Actions\Customer\AppointmentCustomer;
 use App\Models\Customer;
 use App\Models\AuthUser;
 use App\Admin\Actions\Post\PtAssign;
@@ -159,6 +160,7 @@ class CustomerController extends AdminController
         $customer_id = $this;
         $grid->actions(function (Grid\Displayers\Actions $actions) {
             $actions->add(new GfpCustomer($actions->row->id));
+            $actions->add(new AppointmentCustomer($actions->row->phone_number));
         });
         return $grid;
     }
