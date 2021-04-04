@@ -31,6 +31,8 @@ class CheckController extends AdminController
 
         $grid->column('id', __('Id'));
         $grid->column('contract_id', __('Contract id'));
+        $grid->column('contract.code')->filter('like');
+        $grid->column('month', __('Tháng'))->filter('like');
         $grid->column('description', __('Description'))->display(function ($images) {
             return json_encode($images);
         });

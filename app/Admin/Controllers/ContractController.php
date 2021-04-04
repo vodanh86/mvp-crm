@@ -7,6 +7,7 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use App\Admin\Actions\Contract\Checkin;
 
 class ContractController extends AdminController
 {
@@ -27,7 +28,7 @@ class ContractController extends AdminController
         $grid = new Grid(new Contract());
 
         $grid->column('id', __('Id'));
-        $grid->column('code', __('Code'));
+        $grid->column('code', __('Code'))->filter("like");
         $grid->column('name', __('Name'));
         $grid->type('Loại')->using(Constant::CONTRACT_TYPE)->filter(Constant::CONTRACT_TYPE);
         $grid->column('price', __('Price'))->display(function ($title) {
@@ -36,6 +37,9 @@ class ContractController extends AdminController
         $grid->column('days', __('Days'));
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
+        $grid->actions(function (Grid\Displayers\Actions $actions) {
+            $actions->add(new Checkin($actions->row->id));
+        });
         return $grid;
     }
 

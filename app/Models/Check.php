@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Contract;
 
 class Check extends Model
 {
@@ -11,6 +12,11 @@ class Check extends Model
     protected $casts = [
         'description' =>'json',
     ];
+
+    public function contract()
+    {
+        return $this->belongsTo(Contract::class);
+    }
 
     public function getDescriptionAttribute($value)
     {
