@@ -29,7 +29,7 @@ class ContractController extends AdminController
         $grid->column('id', __('Id'));
         $grid->column('code', __('Code'));
         $grid->column('name', __('Name'));
-        $grid->type('Loại')->using(Constant::CONTRACT_TYPE);
+        $grid->type('Loại')->using(Constant::CONTRACT_TYPE)->filter(Constant::CONTRACT_TYPE);
         $grid->column('price', __('Price'))->display(function ($title) {
             return number_format($title);
         });
