@@ -31,7 +31,9 @@ class CheckController extends AdminController
 
         $grid->column('id', __('Id'));
         $grid->column('contract_id', __('Contract id'));
-        $grid->column('description', __('Description'));
+        $grid->column('description', __('Description'))->display(function ($images) {
+            return json_encode($images);
+        });
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
 
