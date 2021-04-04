@@ -20,4 +20,6 @@ Route::group([
     $router->resource('picture', MediaController::class);
     $router->resource('customers', CustomerController::class);
     $router->resource('gfps', GfpController::class,['customer_id']);
+    $router->resource('contracts', ContractController::class);
+    $router->resource('checks', CheckController::class);
 });
