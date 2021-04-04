@@ -68,7 +68,6 @@ class CheckController extends AdminController
 
         $form->select('contract_id', __('Contract id'))->options(Contract::all()->pluck('code', 'id'));
         $form->text('month', __('Tháng'))->default(3);
-        $form->text('description', __('Description'));
         $form->table('description', function ($table) {
             $table->select('pt', __('Pt'))->options(AuthUser::all()->pluck('name', 'id'));
             $table->number('count');

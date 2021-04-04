@@ -29,12 +29,13 @@ class ContractController extends AdminController
         $grid->column('id', __('Id'));
         $grid->column('code', __('Code'));
         $grid->column('name', __('Name'));
+        $grid->type('Loại')->using(Constant::CONTRACT_TYPE);
+        $grid->column('price', __('Price'))->display(function ($title) {
+            return number_format($title);
+        });
+        $grid->column('days', __('Days'));
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
-        $grid->column('type', __('Type'));
-        $grid->column('price', __('Price'));
-        $grid->column('days', __('Days'));
-
         return $grid;
     }
 
@@ -71,7 +72,7 @@ class ContractController extends AdminController
 
         $form->text('code', __('Code'));
         $form->text('name', __('Name'));
-        $form->select('type', __('Loại hợp đồng'))->options(Constant::CONTRACT_TYPE)->setWidth(2, 2);
+        $form->select('type', __('Loại hợp đồng'))->options(Constant::CONTRACT_TYPE)->default(1)->setWidth(2, 2);
         $form->currency('price', __('Price'))->symbol('VND');
         $form->text('days', __('Days'));
 
