@@ -35,6 +35,7 @@ class ContractController extends AdminController
             return number_format($title);
         });
         $grid->column('days', __('Days'));
+        $grid->column('price_one', __('Giá 1 session'));
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
         $grid->actions(function (Grid\Displayers\Actions $actions) {
@@ -79,7 +80,16 @@ class ContractController extends AdminController
         $form->select('type', __('Loại hợp đồng'))->options(Constant::CONTRACT_TYPE)->default(1)->setWidth(2, 2);
         $form->currency('price', __('Price'))->symbol('VND');
         $form->text('days', __('Days'));
-
+        $form->currency('price_one', __('Giá 1 session'))->symbol('VND')->readonly();
+        // callback before save
+        $form->saving(function (Form $form) {
+            if ($form->type == 1 && $form->days != 0){
+                $form->price_one = $form->price/$form->days;
+            }
+            if ($form->type == 0){
+                $form->price_one = 80000;
+            }
+        });
         return $form;
     }
 }
