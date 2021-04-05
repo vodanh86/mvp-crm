@@ -38,7 +38,35 @@ class CheckController extends AdminController
         });
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
+        $grid->footer(function ($query) {
 
+            // Query the total amount of the order with the paid status
+            $data = $query->get();
+            $oldCom = array();
+            $newCom = array();
+            foreach($data as $datum){
+                $contract = $datum["contract"];
+                foreach($datum["description"] as $index => $pt){
+                    if(!array_key_exists($pt["pt"], $oldCom)){
+                        $oldCom[$pt["pt"]] = 0;
+                    } 
+                    if(!array_key_exists($pt["pt"], $newCom)){
+                        $newCom[$pt["pt"]] = 0;
+                    } 
+                    if ($contract["type"] == 0) {
+                        $oldCom[$pt["pt"]] += $pt["count"] * 80000.0;
+                    } else {
+                        $newCom[$pt["pt"]] += $pt["count"] * $contract["price"] / $contract["days"];
+                    }
+                }
+            }
+            $html = "";
+            foreach($oldCom as $pt => $sum){
+                $html .= "<tr><td>".AuthUser::find($pt)->name."</td><td>$sum</td><td>".intval($newCom[$pt])."</td></tr>";
+            }
+            return "<div style='padding: 10px;'>Tổng tiền dạy ： <table style='width:100%'>
+            <tr><td>Tên Pt</td><td>Tiền dạy cũ</td><td>Tiền dạy mới</td></tr>".$html."</table></div>";
+        });
         return $grid;
     }
 
