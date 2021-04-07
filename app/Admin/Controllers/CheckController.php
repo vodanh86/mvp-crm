@@ -50,28 +50,34 @@ class CheckController extends AdminController
             $data = $query->get();
             $oldCom = array();
             $newCom = array();
+            $oldSes = array();
+            $newSes = array();
             foreach($data as $datum){
                 $contract = $datum["contract"];
                 foreach($datum["description"] as $index => $pt){
                     if(!array_key_exists($pt["pt"], $oldCom)){
                         $oldCom[$pt["pt"]] = 0;
+                        $oldSes[$pt["pt"]] = 0;
                     } 
                     if(!array_key_exists($pt["pt"], $newCom)){
                         $newCom[$pt["pt"]] = 0;
+                        $newSes[$pt["pt"]] = 0;
                     } 
                     if ($contract["type"] == 0) {
                         $oldCom[$pt["pt"]] += $pt["count"] * 80000.0;
+                        $oldSes[$pt["pt"]] += $pt["count"];
                     } else {
                         $newCom[$pt["pt"]] += $pt["count"] * $contract["price"] / $contract["days"];
+                        $newSes[$pt["pt"]] += $pt["count"];
                     }
                 }
             }
             $html = "";
             foreach($oldCom as $pt => $sum){
-                $html .= "<tr><td>".AuthUser::find($pt)->name."</td><td style='text-align: right;'>$sum</td><td style='text-align: right;'>".intval($newCom[$pt])."</td></tr>";
+                $html .= "<tr><td>".AuthUser::find($pt)->name."</td><td style='text-align: right;'>$sum</td><td style='text-align: right;'>".intval($oldSes[$pt])."</td><td style='text-align: right;'>".intval($newCom[$pt])."</td><td style='text-align: right;'>".intval($newSes[$pt])."</td></tr>";
             }
-            return "<div style='padding: 10px;'>Tổng tiền dạy ： <table style='width:50%'>
-            <tr><td>Tên Pt</td><td style='text-align: right;'>Tiền dạy cũ</td><td style='text-align: right;'>Tiền dạy mới</td></tr>".$html."</table></div>";
+            return "<div style='padding: 10px;'>Tổng tiền dạy ： <table style='width:100%'>
+            <tr><td>Tên Pt</td><td style='text-align: right;'>Tiền dạy cũ</td><td style='text-align: right;'>Số buổi dạy cũ</td><td style='text-align: right;'>Tiền dạy mới</td><td style='text-align: right;'>Số buổi dạy mới</td></tr>".$html."</table></div>";
         });
         return $grid;
     }
