@@ -37,7 +37,7 @@ class CheckController extends AdminController
         $grid->column('description', __('Description'))->display(function ($pts) use($listPts) {
             $newDes = array();
             foreach($pts as $pt ){
-                $pt["name"] = $listPts[$pt["pt"]];
+                $pt["pt"] = $listPts[$pt["pt"]];
                 $newDes[] = $pt;
             }
             return json_encode($newDes);
