@@ -68,10 +68,10 @@ class CheckController extends AdminController
             }
             $html = "";
             foreach($oldCom as $pt => $sum){
-                $html .= "<tr><td>".AuthUser::find($pt)->name."</td><td>$sum</td><td>".intval($newCom[$pt])."</td></tr>";
+                $html .= "<tr><td>".AuthUser::find($pt)->name."</td><td style='text-align: right;'>$sum</td><td style='text-align: right;'>".intval($newCom[$pt])."</td></tr>";
             }
-            return "<div style='padding: 10px;'>Tổng tiền dạy ： <table style='width:100%'>
-            <tr><td>Tên Pt</td><td>Tiền dạy cũ</td><td>Tiền dạy mới</td></tr>".$html."</table></div>";
+            return "<div style='padding: 10px;'>Tổng tiền dạy ： <table style='width:50%'>
+            <tr><td>Tên Pt</td><td style='text-align: right;'>Tiền dạy cũ</td><td style='text-align: right;'>Tiền dạy mới</td></tr>".$html."</table></div>";
         });
         return $grid;
     }
