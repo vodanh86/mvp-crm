@@ -29,13 +29,18 @@ class CheckController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Check());
-
+        $listPts = AuthUser::pluck('name', 'id');
         $grid->column('id', __('Id'));
         $grid->column('contract_id', __('Contract id'));
         $grid->column('contract.code')->filter('like');
         $grid->column('month', __('Tháng'))->filter('like');
-        $grid->column('description', __('Description'))->display(function ($images) {
-            return json_encode($images);
+        $grid->column('description', __('Description'))->display(function ($pts) use($listPts) {
+            $newDes = array();
+            foreach($pts as $pt ){
+                $pt["name"] = $listPts[$pt["pt"]];
+                $newDes[] = $pt;
+            }
+            return json_encode($newDes);
         });
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
