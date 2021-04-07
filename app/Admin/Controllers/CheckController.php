@@ -10,6 +10,7 @@ use App\Models\AuthUser;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use App\Admin\Selectable\SelectContract;
 
 class CheckController extends AdminController
 {
@@ -97,8 +98,7 @@ class CheckController extends AdminController
     protected function form()
     {
         $form = new Form(new Check());
-
-        $form->select('contract_id', __('Contract id'))->options(Contract::all()->pluck('code', 'id'));
+        $form->belongsTo('contract_id', SelectContract::class,'Chọn hợp đồng');
         $form->text('month', __('Tháng'))->default(3);
         $form->table('description', function ($table) {
             $table->select('pt', __('Pt'))->options(AuthUser::all()->pluck('name', 'id'));
