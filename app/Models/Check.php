@@ -23,7 +23,7 @@ class Check extends Model
         return array_values(json_decode($value, true) ?: []);
     }
 
-    public function setCDescriptionAttribute($value)
+    public function setDescriptionAttribute($value)
     {
         $this->attributes['description'] = json_encode(array_values($value));
     }

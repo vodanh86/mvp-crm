@@ -35,7 +35,9 @@ class ContractController extends AdminController
             return number_format($title);
         });
         $grid->column('days', __('Days'));
-        $grid->column('price_one', __('Giá 1 session'));
+        $grid->column('price_one', __('Giá 1 session'))->display(function ($title) {
+            return number_format($title);
+        })->sortable();
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
         $grid->actions(function (Grid\Displayers\Actions $actions) {
