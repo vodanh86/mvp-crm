@@ -79,7 +79,7 @@ class CheckController extends AdminController
             return "<script type='text/javascript'>
             function update(pt){
                 console.log(document.getElementById('contract_' + pt).innerHTML);
-                document.getElementById('com_' + pt).innerHTML = parseInt(document.getElementById('per_' + pt).value) * parseInt(document.getElementById('contract_' + pt).innerHTML) / 100;
+                document.getElementById('com_' + pt).innerHTML = parseFloat(document.getElementById('per_' + pt).value) * parseFloat(document.getElementById('contract_' + pt).innerHTML) / 100;
             }
             </script>
             <div style='padding: 10px;'>Tổng tiền dạy ： <table style='width:100%'>
