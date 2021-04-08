@@ -74,10 +74,16 @@ class CheckController extends AdminController
             }
             $html = "";
             foreach($oldCom as $pt => $sum){
-                $html .= "<tr><td>".AuthUser::find($pt)->name."</td><td style='text-align: right;'>$sum</td><td style='text-align: right;'>".intval($oldSes[$pt])."</td><td style='text-align: right;'>".intval($newCom[$pt])."</td><td style='text-align: right;'>".intval($newSes[$pt])."</td></tr>";
+                $html .= "<tr><td>".AuthUser::find($pt)->name."</td><td style='text-align: right;'>$sum</td><td style='text-align: right;'>".intval($oldSes[$pt])."</td><td style='text-align: right;'>".intval($newSes[$pt])."</td><td style='text-align: right;'><input  onchange='update($pt)' type='text' id='per_$pt' name='lname' value='0'/></td><td style='text-align: right;'><label id='contract_$pt'>".intval($newCom[$pt])."</label></td><td style='text-align: right;'><label id='com_$pt'>0</label></td></tr>";
             }
-            return "<div style='padding: 10px;'>Tổng tiền dạy ： <table style='width:100%'>
-            <tr><td>Tên Pt</td><td style='text-align: right;'>Tiền dạy cũ</td><td style='text-align: right;'>Số buổi dạy cũ</td><td style='text-align: right;'>Tiền dạy mới</td><td style='text-align: right;'>Số buổi dạy mới</td></tr>".$html."</table></div>";
+            return "<script type='text/javascript'>
+            function update(pt){
+                console.log(document.getElementById('contract_' + pt).innerHTML);
+                document.getElementById('com_' + pt).innerHTML = parseInt(document.getElementById('per_' + pt).value) * parseInt(document.getElementById('contract_' + pt).innerHTML) / 100;
+            }
+            </script>
+            <div style='padding: 10px;'>Tổng tiền dạy ： <table style='width:100%'>
+            <tr><td>Tên Pt</td><td style='text-align: right;'>Tiền dạy cũ</td><td style='text-align: right;'>Số buổi dạy cũ</td><td style='text-align: right;'>Số buổi dạy mới</td><td style='text-align: right;'>Phần trăm nhận</td><td style='text-align: right;'>Tiền dạy mới</td><td style='text-align: right;'>Tiền com dạy</td></tr>".$html."</table></div>";
         });
         return $grid;
     }
