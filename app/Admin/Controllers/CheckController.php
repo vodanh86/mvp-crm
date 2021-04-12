@@ -32,7 +32,7 @@ class CheckController extends AdminController
         $listPts = AuthUser::pluck('name', 'id');
         $grid->column('id', __('Id'));
         $grid->column('contract_id', __('Contract id'));
-        $grid->column('contract.code')->filter('like');
+        $grid->column('contract.code');
         $grid->column('month', __('Tháng'))->filter('like');
         $grid->column('description', __('Description'))->display(function ($pts) use($listPts) {
             $newDes = array();
@@ -44,6 +44,25 @@ class CheckController extends AdminController
         });
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
+
+
+        $grid->filter(function($filter){
+            // Remove the default id filter
+            $filter->disableIdFilter();
+            // Add a column filter
+            $filter->like('month', 'Tháng');
+
+            $filter->where(function ($query) {
+
+                $query->whereHas('contract', function ($query) {
+                    $query->where('code', 'like', "%{$this->input}%");
+                });
+            
+            }, 'Contract');
+        });
+
+        
+
         $grid->footer(function ($query) {
 
             // Query the total amount of the order with the paid status
@@ -85,6 +104,7 @@ class CheckController extends AdminController
             <div style='padding: 10px;'>Tổng tiền dạy ： <table style='width:100%'>
             <tr><td>Tên Pt</td><td style='text-align: right;'>Tiền dạy cũ</td><td style='text-align: right;'>Số buổi dạy cũ</td><td style='text-align: right;'>Số buổi dạy mới</td><td style='text-align: right;'>Phần trăm nhận</td><td style='text-align: right;'>Tiền dạy mới</td><td style='text-align: right;'>Tiền com dạy</td></tr>".$html."</table></div>";
         });
+        $grid->model()->orderBy('id', 'DESC');
         return $grid;
     }
 
