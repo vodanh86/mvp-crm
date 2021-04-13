@@ -36,7 +36,7 @@ class HomeController extends Controller
                 });
 
                 $row->column(4, function (Column $column) {
-                    $column->append(view('admin.charts.sale', ["count" => Customer::groupBy('sale_id')
+                    $column->append(view('admin.charts.sale', ["count" => Customer::where('status', '!=', 0)->groupBy('sale_id')
                             ->selectRaw('count(*) as total, sale_id')
                             ->get(), "countSaleNew" => Customer::where('status', '=', 0)->groupBy('sale_id')
                             ->selectRaw('count(*) as total, sale_id')
