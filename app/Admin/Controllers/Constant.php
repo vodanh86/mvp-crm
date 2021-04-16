@@ -14,7 +14,8 @@ abstract class Constant
     );
     const CUSTOMER_STATUS = array(
         0 => 'Chưa liên hệ', 1 => "Chưa có nhu cầu", 2 => "Đã di chuyển", 3 => "Đang hẹn lên",
-        4 => "Khách cũ", 6 => "Đang tập chỗ khác", 7 => "Đang chăm sóc", 100 => "Khác"
+        4 => "Khách cũ", 6 => "Đang tập chỗ khác", 7 => "Đang chăm sóc", 
+        8 => "Đã mua", 100 => "Khác"
     );
     const SOURCE = array(
         0 => 'Excel', 1 => 'Facebook', 2 => 'Page', 3 => 'Voucher', 4 => 'BR', 5 => 'Miss Sale',
