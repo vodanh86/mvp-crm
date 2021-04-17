@@ -6,7 +6,7 @@ Use App\Models\Appointment;
 Use Encore\Admin\Actions\RowAction;
 use Encore\Admin\Facades\Admin;
 
-class VerifyContract extends RowAction
+class SetupCustomer extends RowAction
 {
     public function dialog()
     {

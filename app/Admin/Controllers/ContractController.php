@@ -127,6 +127,12 @@ class ContractController extends AdminController
         })
         ->when(1, function (Form $form) {
             $form->currency('price', __('Price'))->symbol('VND');
+        })
+        ->when(2, function (Form $form) {
+            $form->currency('price', __('Price'))->symbol('VND');
+        })
+        ->when(3, function (Form $form) {
+            $form->currency('price', __('Price'))->symbol('VND');
         });
         $form->text('conditional_note', __('Điều kiện phụ'));
         $form->text('cared_note', __('Điều cần lưu ý'));
