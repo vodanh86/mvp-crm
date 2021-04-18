@@ -22,4 +22,5 @@ Route::group([
     $router->resource('gfps', GfpController::class,['customer_id']);
     $router->resource('contracts', ContractController::class);
     $router->resource('checks', CheckController::class);
+    $router->resource('expenditures', ExpenditureController::class);
 });

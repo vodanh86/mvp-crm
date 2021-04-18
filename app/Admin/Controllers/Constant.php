@@ -59,4 +59,7 @@ abstract class Constant
         0 => 'Tăng cân', 1 => 'Giảm cân', 2 => 'Tăng cường sức bền và dẻo dai', 3 => 'Tăng cường sinh lý',
         4 => 'Tăng cường khả năng sinh sản', 5 => 'Cải thiện hệ tiêu hoá'
     );
+
+    const EXP_TYPE = array(0 => "Thu", 1 => "Chi");
+    const IN_TYPE = array(0 => "Vé lẻ", 1 => "Nước");
 }
