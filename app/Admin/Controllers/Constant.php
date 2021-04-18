@@ -27,7 +27,7 @@ abstract class Constant
         'on'  => ['value' => 1, 'text' => '&nbsp;Hiện  ', 'color' => 'success'],
         'off' => ['value' => 0, 'text' => '&nbsp;&nbsp;Ẩn&nbsp;&nbsp;', 'color' => 'danger'],
     );
-    const CONTRACT_TYPE = array(0 => 'PT', 1 => 'Hội viên', 2 => "Gia hạn", 3 => 'Chuyển nhượng', "Bơi cơ bản", "PT bơi");
+    const CONTRACT_TYPE = array(0 => 'PT', 1 => 'Hội viên', 2 => "Gia hạn", 3 => 'Chuyển nhượng', 4 => "Bơi cơ bản", 5 => "PT bơi");
     const PT_CONTRACT_TYPE = array(0 => 'Dreampool', 1 => 'Mvp');
     const APP_TYPE = array(0 => 'Lịch hẹn', 1 => 'Show');
     const POST_CATEGORY = array(
