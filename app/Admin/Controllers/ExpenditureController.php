@@ -45,6 +45,9 @@ class ExpenditureController extends AdminController
                 $actions->disableEdit();
             }
         });
+        $grid->batchActions(function ($batch) {
+            $batch->disableDelete();
+        });
         $grid->model()->orderBy('id', 'DESC');
         return $grid;
     }

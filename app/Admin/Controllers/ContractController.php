@@ -74,6 +74,9 @@ class ContractController extends AdminController
                 $actions->add(new Checkin($actions->row->id));
             }
         });
+        $grid->batchActions(function ($batch) {
+            $batch->disableDelete();
+        });
         $grid->model()->orderBy('id', 'DESC');
         return $grid;
     }
