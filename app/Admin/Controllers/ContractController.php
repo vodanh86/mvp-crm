@@ -94,11 +94,14 @@ class ContractController extends AdminController
         $show->field('id', __('Id'));
         $show->field('code', __('Code'));
         $show->field('name', __('Name'));
-        $show->field('created_at', __('Created at'));
-        $show->field('updated_at', __('Updated at'));
         $show->field('type', __('Type'));
         $show->field('price', __('Price'));
         $show->field('days', __('Days'));
+        $show->field('conditional_note', __('Điều kiện phụ'));
+        $show->field('cared_note', __('Điều cần lưu ý'));
+        $show->field('cared_note', __('Điều cần lưu ý'));
+        $show->field('created_at', __('Created at'));
+        $show->field('updated_at', __('Updated at'));
         $show->panel()
         ->tools(function ($tools) {
             $tools->disableEdit();
