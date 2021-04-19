@@ -153,11 +153,13 @@ class ContractController extends AdminController
         $form->text('cared_note', __('Điều cần lưu ý'));
         // callback before save
         $form->saving(function (Form $form) {
-            if ($form->type == 1 && $form->days != 0){
-                $form->price_one = $form->price/$form->days;
-            }
-            if ($form->type == 0){
-                $form->price_one = 80000;
+            if (($form->contract_type == 0) || ($form->contract_type == 5)){
+                if ($form->type == 1 && $form->days != 0){
+                    $form->price_one = $form->price/$form->days;
+                }
+                if ($form->type == 0){
+                    $form->price_one = 80000;
+                }
             }
         });
         return $form;
