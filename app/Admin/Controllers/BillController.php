@@ -47,7 +47,7 @@ class BillController extends AdminController
             foreach($pts as $pt ){
                 $newDes[] = $listPts[$pt];
             }
-            return json_encode($newDes);
+            return implode(",", $newDes);
         });
         $grid->column('verify', __('Xác nhận'))->action(VerifyBill::class)->filter(Constant::YES_NO_QUESTION);
         $grid->column('conditional_note', __('Điều kiện phụ'))->display(function ($title) {
