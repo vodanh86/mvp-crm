@@ -89,7 +89,7 @@ class ExpenditureController extends AdminController
     {
         $form = new Form(new Expenditure());
 
-        $form->select('type', __('Thu chi'))->options(Constant::EXP_TYPE)->default(1)->setWidth(2, 2)
+        $form->select('type', __('Thu chi'))->options(Constant::EXP_TYPE)->default(0)->setWidth(2, 2)
         ->when(0, function (Form $form) {
             $form->select('sub_type', __('Loại thu'))->options(Constant::IN_TYPE)->default(1)->setWidth(2, 2);
         });
