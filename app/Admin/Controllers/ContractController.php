@@ -65,7 +65,7 @@ class ContractController extends AdminController
             }
         })->sortable();
         
-        $grid->column('bought_at', __('Ngày mua'))->sortable();
+        $grid->column('bought_date', __('Ngày mua'))->sortable();
         $grid->column('updated_at', __('Updated at'))->sortable();
         $grid->actions(function (Grid\Displayers\Actions $actions) {
             if($actions->row->verify == 1){
