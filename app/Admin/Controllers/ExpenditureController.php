@@ -30,6 +30,7 @@ class ExpenditureController extends AdminController
         $grid->column('id', __('Id'));
         $grid->column('type', __('Type'))->using(Constant::EXP_TYPE)->filter(Constant::EXP_TYPE);
         $grid->column('sub_type', __('Sub type'))->using(Constant::IN_TYPE)->filter(Constant::IN_TYPE);
+        $grid->column('bought_date', __('Ngày mua'))->sortable();
         $grid->column('price', __('Price'))->display(function ($title) {
             return number_format($title);
         });
@@ -92,6 +93,7 @@ class ExpenditureController extends AdminController
         ->when(0, function (Form $form) {
             $form->select('sub_type', __('Loại thu'))->options(Constant::IN_TYPE)->default(1)->setWidth(2, 2);
         });
+        $form->date('bought_date', 'Ngày mua');
         $form->currency('price', __('Price'))->symbol('VND');
         $form->text('note', __('Note'));
 
