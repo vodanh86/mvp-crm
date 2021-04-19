@@ -2,23 +2,23 @@
 
 namespace App\Admin\Controllers;
 
+use App\Models\Bill;
 use App\Models\Contract;
 use App\Models\AuthUser;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
-use App\Admin\Actions\Contract\VerifyContract;
-use App\Admin\Actions\Contract\Checkin;
+use App\Admin\Actions\Bill\VerifyBill;
 
-class ContractController extends AdminController
+class BillController extends AdminController
 {
     /**
      * Title for current resource.
      *
      * @var string
      */
-    protected $title = 'Contract';
+    protected $title = 'Quản lý biên nhận';
 
     /**
      * Make a grid builder.
@@ -28,7 +28,7 @@ class ContractController extends AdminController
     protected function grid()
     {
         $listPts = AuthUser::pluck('name', 'id');
-        $grid = new Grid(new Contract());
+        $grid = new Grid(new Bill());
 
         $grid->column('id', __('Id'));
         $grid->column('code', __('Code'))->filter("like")->width(60);
@@ -49,7 +49,7 @@ class ContractController extends AdminController
             }
             return json_encode($newDes);
         });
-        $grid->column('verify', __('Xác nhận'))->action(VerifyContract::class)->filter(Constant::YES_NO_QUESTION);
+        $grid->column('verify', __('Xác nhận'))->action(VerifyBill::class)->filter(Constant::YES_NO_QUESTION);
         $grid->column('conditional_note', __('Điều kiện phụ'))->display(function ($title) {
             if ($title) {
                 if (strlen($title) > 10) {return substr($title, 0, 10). "..."; } else {
@@ -71,7 +71,6 @@ class ContractController extends AdminController
             if($actions->row->verify == 1){
                 $actions->disableDelete();
                 $actions->disableEdit();
-                $actions->add(new Checkin($actions->row->id));
             }
         });
         $grid->batchActions(function ($batch) {
@@ -89,7 +88,7 @@ class ContractController extends AdminController
      */
     protected function detail($id)
     {
-        $show = new Show(Contract::findOrFail($id));
+        $show = new Show(Bill::findOrFail($id));
 
         $show->field('id', __('Id'));
         $show->field('code', __('Code'));
@@ -118,12 +117,14 @@ class ContractController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new Contract());
+        $form = new Form(new Bill());
 
         $form->text('code', __('Code'));
         $form->text('name', __('Name'));
         $form->date('bought_date', 'Ngày mua');
         $form->multipleSelect('sale_id')->options(AuthUser::all()->pluck('name', 'id'));
+        $form->select('push', __('Có phải push ko'))->options(Constant::YES_NO_QUESTION)->default(0)->setWidth(2, 2);
+        $form->select('payment_type', __('Loại thanh toán'))->options(Constant::PAYMENT_TYPE)->default(0)->setWidth(2, 2);
         $form->currency('price', __('Price'))->symbol('VND');
         $form->select('contract_type', __('Loại hợp đồng'))->options(Constant::CONTRACT_TYPE)->default(1)->setWidth(2, 2)
         ->when(0, function (Form $form) {
@@ -136,6 +137,7 @@ class ContractController extends AdminController
             $form->text('days', __('Days'));
             $form->currency('price_one', __('Giá 1 session'))->symbol('VND')->readonly();
         });
+        $form->select('contract_id', __('Chọn hợp đồng'))->options(Contract::all()->pluck('code', 'id'));
         $form->text('conditional_note', __('Điều kiện phụ'));
         $form->text('cared_note', __('Điều cần lưu ý'));
         // callback before save
