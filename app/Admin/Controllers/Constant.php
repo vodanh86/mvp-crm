@@ -27,8 +27,9 @@ abstract class Constant
         'on'  => ['value' => 1, 'text' => '&nbsp;Hiện  ', 'color' => 'success'],
         'off' => ['value' => 0, 'text' => '&nbsp;&nbsp;Ẩn&nbsp;&nbsp;', 'color' => 'danger'],
     );
-    const CONTRACT_TYPE = array(0 => 'PT', 1 => 'Hội viên', 2 => "Gia hạn", 3 => 'Chuyển nhượng', 4 => "Bơi cơ bản", 5 => "PT bơi",
-     6 => "Nâng câp");
+    const CONTRACT_TYPE = array(0 => 'PT', 1 => 'Hội viên', 4 => "Bơi cơ bản", 5 => "PT bơi");
+    const BILL_TYPE = array(0 => 'PT', 1 => 'Hội viên', 2 => "Gia hạn", 3 => 'Chuyển nhượng', 4 => "Bơi cơ bản", 5 => "PT bơi",
+     6 => "Nâng câp", 7 => "Bảo lưu", 8 => "Làm lại thẻ");
     const PT_CONTRACT_TYPE = array(0 => 'Dreampool', 1 => 'Mvp');
     const APP_TYPE = array(0 => 'Lịch hẹn', 1 => 'Show');
     const POST_CATEGORY = array(
@@ -63,5 +64,5 @@ abstract class Constant
 
     const EXP_TYPE = array(0 => "Thu", 1 => "Chi");
     const IN_TYPE = array(0 => "Vé lẻ", 1 => "Nước");
-    const PAYMENT_TYPE = array(0 => "Chuyển khoản", 1 => "Thẻ tín dụng");
+    const PAYMENT_TYPE = array(0 => "Chuyển khoản", 1 => "POS");
 }
