@@ -52,14 +52,18 @@ class ContractController extends AdminController
         $grid->column('verify', __('Xác nhận'))->action(VerifyContract::class)->filter(Constant::YES_NO_QUESTION);
         $grid->column('conditional_note', __('Điều kiện phụ'))->display(function ($title) {
             if ($title) {
-                if (strlen($title) > 10) {return substr($title, 0, 10). "..."; } else {
+                if (strlen($title) > 10) {
+                    return explode(' ', $title)[0]. "..."; 
+                } else {
                     return $title;
                 }
             }
         })->sortable();
         $grid->column('cared_note', __('Lưu ý'))->display(function ($title) {
             if ($title) {
-                if (strlen($title) > 10) {return substr($title, 0, 10). "..."; } else {
+                if (strlen($title) > 10) {
+                    return explode(' ', $title)[0]. "..."; 
+                } else {
                     return $title;
                 }
             }
