@@ -39,9 +39,6 @@ class BillController extends AdminController
             return number_format($title);
         });
         $grid->column('days', __('Days'));
-        $grid->column('price_one', __('Giá 1 session'))->display(function ($title) {
-            return number_format($title);
-        })->sortable();
         $grid->column('sale_id', __('Người bán'))->display(function ($pts) use($listPts) {
             $newDes = array();
             foreach($pts as $pt ){
@@ -70,7 +67,6 @@ class BillController extends AdminController
         })->sortable();
         
         $grid->column('bought_date', __('Ngày mua'))->sortable();
-        $grid->column('updated_at', __('Updated at'))->sortable();
         $grid->actions(function (Grid\Displayers\Actions $actions) {
             if($actions->row->verify == 1){
                 $actions->disableDelete();
@@ -125,7 +121,11 @@ class BillController extends AdminController
 
         $form->text('code', __('Code'));
         $form->text('name', __('Name'));
+        $form->text('address', __('Địa chỉ'));
+        $form->date('birthday', __('Ngày sinh'));
+        $form->select('source', __('Nguồn'))->options(Constant::CUSTOMER_SOURCE)->default(0)->setWidth(2, 2);
         $form->date('bought_date', 'Ngày mua');
+        $form->mobile("phone", "Số điện thoại");
         $form->multipleSelect('sale_id')->options(AuthUser::all()->pluck('name', 'id'));
         $form->select('push', __('Có phải push ko'))->options(Constant::YES_NO_QUESTION)->default(0)->setWidth(2, 2);
         $form->select('payment_type', __('Loại thanh toán'))->options(Constant::PAYMENT_TYPE)->default(0)->setWidth(2, 2);
@@ -145,17 +145,6 @@ class BillController extends AdminController
         $form->text('contract_id', __('Chọn hợp đồng'));
         $form->text('conditional_note', __('Điều kiện phụ'));
         $form->text('cared_note', __('Điều cần lưu ý'));
-        // callback before save
-        $form->saving(function (Form $form) {
-            if (($form->contract_type == 0) || ($form->contract_type == 5)){
-                if ($form->type == 1 && $form->days != 0){
-                    $form->price_one = $form->price/$form->days;
-                }
-                if ($form->type == 0){
-                    $form->price_one = 80000;
-                }
-            }
-        });
         return $form;
     }
 }

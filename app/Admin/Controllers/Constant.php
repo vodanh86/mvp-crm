@@ -65,4 +65,5 @@ abstract class Constant
     const EXP_TYPE = array(0 => "Thu", 1 => "Chi");
     const IN_TYPE = array(0 => "Vé lẻ", 1 => "Nước");
     const PAYMENT_TYPE = array(0 => "Chuyển khoản", 1 => "POS");
+    const CUSTOMER_SOURCE = array(0 => 'Data', 1 => 'Page-Marketing', 2 => 'Voucher', 3 => "Renew", 4=> "Br");
 }
