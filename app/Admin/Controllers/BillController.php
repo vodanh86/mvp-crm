@@ -138,7 +138,7 @@ class BillController extends AdminController
             $form->text('days', __('Days'));
             $form->currency('price_one', __('Giá 1 session'))->symbol('VND')->readonly();
         });
-        $form->select('contract_id', __('Chọn hợp đồng'))->options(Contract::all()->pluck('code', 'id'));
+        $form->text('contract_id', __('Chọn hợp đồng'));
         $form->text('conditional_note', __('Điều kiện phụ'));
         $form->text('cared_note', __('Điều cần lưu ý'));
         // callback before save
