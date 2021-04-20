@@ -126,6 +126,7 @@ class BillController extends AdminController
         $form->select('push', __('Có phải push ko'))->options(Constant::YES_NO_QUESTION)->default(0)->setWidth(2, 2);
         $form->select('payment_type', __('Loại thanh toán'))->options(Constant::PAYMENT_TYPE)->default(0)->setWidth(2, 2);
         $form->currency('price', __('Price'))->symbol('VND');
+        $form->currency('full_price', __('Giá gói tập'))->symbol('VND');
         $form->select('contract_type', __('Loại hợp đồng'))->options(Constant::CONTRACT_TYPE)->default(1)->setWidth(2, 2)
         ->when(0, function (Form $form) {
             $form->select('type', __('Loại hợp đồng PT'))->options(Constant::PT_CONTRACT_TYPE)->default(1)->setWidth(2, 2);
