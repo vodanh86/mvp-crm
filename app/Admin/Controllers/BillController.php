@@ -38,7 +38,7 @@ class BillController extends AdminController
         $grid->column('price', __('Price'))->display(function ($title) {
             return number_format($title);
         });
-        $grid->column('days', __('Days'));
+        $grid->column('days', __('Session'));
         $grid->column('sale_id', __('Người bán'))->display(function ($pts) use($listPts) {
             $newDes = array();
             foreach($pts as $pt ){
@@ -55,7 +55,9 @@ class BillController extends AdminController
                     return $title;
                 }
             }
-        })->sortable();
+        })->sortable()->modal('Điều kiện phụ', function ($model) {
+            return $model->conditional_note;
+        });
         $grid->column('cared_note', __('Lưu ý'))->display(function ($title) {
             if ($title) {
                 if (strlen($title) > 10) {
@@ -64,7 +66,9 @@ class BillController extends AdminController
                     return $title;
                 }
             }
-        })->sortable();
+        })->sortable()->modal('Lưu ý', function ($model) {
+            return $model->conditional_note;
+        });
         
         $grid->column('bought_date', __('Ngày mua'))->sortable();
         $grid->actions(function (Grid\Displayers\Actions $actions) {
