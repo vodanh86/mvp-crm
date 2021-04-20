@@ -32,23 +32,6 @@ abstract class Constant
      6 => "Nâng câp", 7 => "Bảo lưu", 8 => "Làm lại thẻ");
     const PT_CONTRACT_TYPE = array(0 => 'Dreampool', 1 => 'Mvp');
     const APP_TYPE = array(0 => 'Lịch hẹn', 1 => 'Show');
-    const POST_CATEGORY = array(
-        0 => 'Trang chủ', 1 => 'Điểm đến',
-        2 => "Cảm hứng", 3 => "Sự kiện", 4 => "Tin tức", 5 => "Thư viện Media"
-    );
-    const POST_TYPE = array(
-        0 => 'Di tích & Danh lam', 1 => 'Cơ quan hành chính',
-        2 => "Khách sạn", 3 => "Nhà hàng quán ăn", 4 => "Trung tâm thương mại",
-        5 => "Giải trí thư giãn", 6 => "Dịch vụ hỗ trợ"
-    );
-    const LOCATION_TYPE_ROUTE = array(
-        "sightseeing" => 0, "office" => 1, "hotel" => 2,
-        "restaurant" => 3, "mall" => 4, "relax" => 5, "support" => 6
-    );
-    const CATEGORY_ROUTE = array(
-        "index" => 0, "feeling" => 2, "map" => 1,
-        "event" => 3, "news" => 4
-    );
 
     const YES_NO_QUESTION = array(0 => "No", 1 => "Yes");
 
