@@ -3,9 +3,11 @@
 namespace App\Admin\Controllers;
 
 use App\Models\Expenditure;
+use App\Admin\Forms\Report;
 use App\Models\Bill;
 use Encore\Admin\Controllers\AdminController;
 use App\Admin\Actions\Expenditure\VerifyExpenditure;
+use Encore\Admin\Layout\Content;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
@@ -50,37 +52,22 @@ class ExpenditureController extends AdminController
         $grid->batchActions(function ($batch) {
             $batch->disableDelete();
         });
-        $grid->header(function ($query) {
-            $month = date('m');
-            // Query the total amount of the order with the paid status
-            $data = Bill::groupBy('contract_type')->where("verify",1)->whereMonth("bought_date",$month)->selectRaw('sum(price) as sum, contract_type')->get();
-            $html = "";
-            $sumIn = 0;
-            foreach($data as $pt => $sum){
-                $html .= "<tr><td>".Constant::BILL_TYPE[$sum["contract_type"]]."</td><td style='text-align: right;'>".number_format($sum["sum"])."</td></tr>";
-                $sumIn += $sum["sum"];
-            }
-
-            $html .= "<tr><td>Tổng tiền thu từ thẻ và PT</td><td style='text-align: right;'>".number_format($sumIn)."</td></tr>";
-
-            $data = Expenditure::groupBy('type')->where("verify",1)->whereMonth("bought_date",$month)->selectRaw('sum(price) as sum, type')->get();
-            $sumAll = $sumIn;
-            foreach($data as $key => $sum){
-                if ($key == 0){
-                    $sumAll += $sum["sum"];
-                    $html .= "<tr><td>Tổng tiền thu</td><td style='text-align: right;'>".number_format($sum["sum"])."</td></tr>";
-                } else {
-                    $sumAll -= $sum["sum"];
-                    $html .= "<tr><td>Tổng tiền chi</td><td style='text-align: right;'>".number_format($sum["sum"])."</td></tr>";
-                }
-            }
-
-            $html .= "<tr><td>Tổng tiền còn lại</td><td style='text-align: right;'>".number_format($sumAll)."</td></tr>";
-            return "<div style='padding: 10px;'>Tổng tiền tháng ： $month <table style='width:50%'>
-            <tr><td>Tên Dịch vụ</td><td style='text-align: right;'>Tổng số thu</td></tr>".$html."</table></div>";
-        });
         $grid->model()->orderBy('id', 'DESC');
         return $grid;
+    }
+
+    public function report(Content $content)
+    {
+        $content
+            ->title('Báo cáo')
+            ->row(new Report());
+
+        // If there is data returned from the backend, take it out of the session and display it at the bottom of the form
+        if ($result = session('result')) {
+            $content->row('<div class="box">'.$result.'</div>');
+        }
+
+        return $content;
     }
 
     /**
