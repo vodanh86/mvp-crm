@@ -67,7 +67,7 @@ class BillController extends AdminController
                 }
             }
         })->sortable()->modal('Lưu ý', function ($model) {
-            return $model->conditional_note;
+            return $model->cared_note;
         });
         
         $grid->column('bought_date', __('Ngày mua'))->sortable();
