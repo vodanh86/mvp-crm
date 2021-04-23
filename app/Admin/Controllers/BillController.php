@@ -33,7 +33,7 @@ class BillController extends AdminController
         $grid->column('id', __('Id'));
         $grid->column('code', __('Code'))->filter("like")->width(60);
         $grid->column('name', __('Name'));
-        $grid->contract_type('Loại')->using(Constant::CONTRACT_TYPE)->filter(Constant::CONTRACT_TYPE);
+        $grid->contract_type('Loại')->using(Constant::BILL_TYPE)->filter(Constant::BILL_TYPE);
         $grid->type('Loại PT')->using(Constant::PT_CONTRACT_TYPE)->filter(Constant::PT_CONTRACT_TYPE);
         $grid->column('price', __('Price'))->display(function ($title) {
             return number_format($title);
