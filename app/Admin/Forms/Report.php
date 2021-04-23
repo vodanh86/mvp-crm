@@ -31,16 +31,30 @@ class Report extends Form
         // Query the total amount of the order with the paid status
         if ($request->report_type == 1){
             $label = "<div style='padding: 10px;'>Tổng tiền ngày ： $request->report_at <table style='width:50%'>";
-            $data = Bill::groupBy('contract_type')->where("verify",1)->where("bought_date",$request->report_at)->selectRaw('sum(price) as sum, contract_type')->get();
+            $data1 = Bill::groupBy('contract_type')->where("verify",1)->where('payment_type', 0)->where("bought_date",$request->report_at)->selectRaw('sum(price) as sum, contract_type')->pluck("sum", "contract_type");
+            $data2 = Bill::groupBy('contract_type')->where("verify",1)->where('payment_type', 1)->where("bought_date",$request->report_at)->selectRaw('sum(price) as sum, contract_type')->pluck("sum", "contract_type");
         } else {
             $label = "<div style='padding: 10px;'>Tổng tiền tháng ： $month <table style='width:50%'>";
-            $data = Bill::groupBy('contract_type')->where("verify",1)->whereMonth("bought_date",$month)->selectRaw('sum(price) as sum, contract_type')->get();
+            $data1 = Bill::groupBy('contract_type')->where("verify",1)->where('payment_type', 0)->whereMonth("bought_date",$month)->selectRaw('sum(price) as sum, contract_type')->pluck("sum", "contract_type");
+            $data2 = Bill::groupBy('contract_type')->where("verify",1)->where('payment_type', 1)->whereMonth("bought_date",$month)->selectRaw('sum(price) as sum, contract_type')->pluck("sum", "contract_type");
         }
+
+        $dataAll = array(0 => 0, 1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0, 8 => 0);
+        for($i = 0; $i < 9; $i ++){
+            if ($data1->has($i)){
+                $dataAll[$i] += $data1[$i];
+            }
+            if ($data2->has($i)){
+                $dataAll[$i] += $data2[$i] * 0.982;
+            }
+        }
+
         $html = "";
         $sumIn = 0;
-        foreach($data as $pt => $sum){
-            $html .= "<tr><td>".Constant::BILL_TYPE[$sum["contract_type"]]."</td><td style='text-align: right;'>".number_format($sum["sum"])."</td></tr>";
-            $sumIn += $sum["sum"];
+        
+        foreach($dataAll as $contract_type => $sum){
+            $html .= "<tr><td>".Constant::BILL_TYPE[$contract_type]."</td><td style='text-align: right;'>".number_format($sum)."</td></tr>";
+            $sumIn += $sum;
         }
 
         $html .= "<tr><td>Tổng tiền thu từ thẻ và PT</td><td style='text-align: right;'>".number_format($sumIn)."</td></tr>";
