@@ -92,7 +92,7 @@ class CustomerController extends AdminController
                 });
             }
             $grid->filter(function ($filter) {
-                //$filter->notIn('sale_id', "Sale")->multipleSelect(AuthUser::all()->pluck('name', 'id')->toArray());
+                $filter->disableIdFilter();
                 $filter->where(function ($query) {
                     switch ($this->input) {
                         case 'yes':
@@ -103,10 +103,24 @@ class CustomerController extends AdminController
                             $query->whereNull('sale_id');
                             break;
                     }
-                }, 'Nhân viên chăm sóc', 'name_for_url_shortcut')->radio([
+                }, 'Nhân viên chăm sóc', 'sale_id')->radio([
                     '' => 'Tất cả',
                     'yes' => 'Đang chăm sóc',
                     'no' => 'Chưa chăm sóc',
+                ]);
+                $filter->where(function ($query) {
+                    switch ($this->input) {
+                        case 'yes':
+                            // custom complex query if the 'yes' option is selected
+                            $query->whereNotNull('note');
+                            break;
+                        case 'no':
+                            $query->whereNull('note');
+                            break;
+                    }
+                }, 'Note', 'note')->radio([
+                    'yes' => 'Có note',
+                    'no' => 'Không note',
                 ]);
             });
         } elseif (Admin::user()->isRole('Pt') || Admin::user()->isRole('Fm')) {

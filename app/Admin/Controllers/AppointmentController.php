@@ -65,7 +65,7 @@ class AppointmentController extends AdminController
                 $actions->add(new GfpCustomer($customer->id));
             }
         });
-
+        $grid->model()->orderBy('id', 'DESC');
         return $grid;
     }
 
