@@ -34,7 +34,7 @@ class AppointmentController extends AdminController
     {
         $grid = new Grid(new Appointment());
 
-        $grid->column('id', __('Id'));
+        $grid->column('id', __('Id'))->sortable();
         $grid->column('name', __('Name'))->filter('like')->sortable()->editable();
         $grid->column('phone_number', __('Phone number'))->filter('like')->editable();
         $grid->column('app_date', __('App date'))->sortable()->editable();
