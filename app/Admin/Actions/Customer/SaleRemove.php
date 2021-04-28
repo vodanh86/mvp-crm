@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 class SaleRemove extends BatchAction
 {
     public $name = 'Bỏ sale quản lý';
-    protected $selector = '.report-posts';
+    protected $selector = '.sale-remove';
 
     public function handle(Collection $collection, Request $request)
     {
