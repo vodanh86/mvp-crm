@@ -169,7 +169,9 @@ class CustomerController extends AdminController
                 ]);
             });
         }
-        $grid->model()->orderBy('like', 'DESC');
+        if (!Admin::user()->isAdministrator()) {
+            $grid->model()->orderBy('like', 'DESC');
+        }
         $grid->model()->orderBy('id', 'DESC');
         $grid->exporter(new ExcelExpoter());
         $grid->quickSearch('phone_number', 'name');
