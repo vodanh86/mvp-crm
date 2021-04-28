@@ -5,8 +5,9 @@ namespace App\Admin\Controllers;
 use App\Admin\Actions\Customer\AppointmentCustomer;
 use App\Models\Customer;
 use App\Models\AuthUser;
-use App\Admin\Actions\Post\PtAssign;
-use App\Admin\Actions\Post\SaleAssign;
+use App\Admin\Actions\Customer\PtAssign;
+use App\Admin\Actions\Customer\SaleAssign;
+use App\Admin\Actions\Customer\SaleRemove;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -89,6 +90,7 @@ class CustomerController extends AdminController
 
                 $grid->tools(function (Grid\Tools $tools) {
                     $tools->append(new SaleAssign());
+                    $tools->append(new SaleRemove());
                 });
             }
             $grid->filter(function ($filter) {
@@ -103,7 +105,7 @@ class CustomerController extends AdminController
                             $query->whereNull('sale_id');
                             break;
                     }
-                }, 'Nhân viên chăm sóc', 'sale_id')->radio([
+                }, 'Nhân viên chăm sóc', 'check_sale_id')->radio([
                     '' => 'Tất cả',
                     'yes' => 'Đang chăm sóc',
                     'no' => 'Chưa chăm sóc',
@@ -118,7 +120,7 @@ class CustomerController extends AdminController
                             $query->whereNull('note');
                             break;
                     }
-                }, 'Note', 'note')->radio([
+                }, 'Note', 'check_note')->radio([
                     'yes' => 'Có note',
                     'no' => 'Không note',
                 ]);

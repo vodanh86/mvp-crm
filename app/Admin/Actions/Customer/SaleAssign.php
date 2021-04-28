@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Actions\Post;
+namespace App\Admin\Actions\Customer;
 
 use App\Models\AuthUser;
 use Illuminate\Http\Request;
@@ -19,7 +19,7 @@ class SaleAssign extends BatchAction
             $model->save();
         }
 
-        return $this->response()->success('Report submitted!')->refresh();
+        return $this->response()->success('Chọn sale thành công!')->refresh();
     }
 
     public function form()

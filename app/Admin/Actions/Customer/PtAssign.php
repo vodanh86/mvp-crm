@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Actions\Post;
+namespace App\Admin\Actions\Customer;
 
 use App\Models\AuthUser;
 use Illuminate\Http\Request;
