@@ -8,6 +8,7 @@ use App\Models\AuthUser;
 use App\Admin\Actions\Customer\PtAssign;
 use App\Admin\Actions\Customer\SaleAssign;
 use App\Admin\Actions\Customer\SaleRemove;
+use App\Admin\Actions\Customer\PtRemove;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -148,6 +149,7 @@ class CustomerController extends AdminController
                 })->filter(AuthUser::all()->pluck('name', 'id')->toArray());
                 $grid->tools(function (Grid\Tools $tools) {
                     $tools->append(new PtAssign());
+                    $tools->append(new PtRemove());
                 });
             }
             $grid->filter(function ($filter) {
@@ -174,7 +176,12 @@ class CustomerController extends AdminController
         }
         $grid->model()->orderBy('id', 'DESC');
         $grid->exporter(new ExcelExpoter());
-        $grid->quickSearch('phone_number', 'name');
+        $grid->quickSearch(function ($model, $query) {
+            $subQueries = explode(" ", $query);
+            foreach($subQueries as $idx => $subQuery){
+                $model->where('phone_number', 'like', "%{$subQuery}%");
+            }
+        });
         $customer_id = $this;
         $grid->column('updated_at', __('Updated at'))->sortable();
         $grid->actions(function (Grid\Displayers\Actions $actions) {

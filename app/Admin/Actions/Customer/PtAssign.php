@@ -26,9 +26,5 @@ class PtAssign extends BatchAction
     {
         $this->select('pt_id', __('Nhân viên chăm sóc'))->options(AuthUser::all()->pluck('name','id'));
     }
-
-    public function html()
-    {
-        return "<a class='report-posts btn btn-sm btn-warning'><i class='fa fa-info-circle'></i>Chọn Pt quản lý</a>";
-    }
+    
 }
