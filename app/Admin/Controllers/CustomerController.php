@@ -180,11 +180,12 @@ class CustomerController extends AdminController
             $subQueries = explode(" ", $query);
             foreach($subQueries as $i => $subQuery){
                 if ($i == 0){
-                    $model->where('phone_number', 'like', "%{$subQuery}%")->orWhere('name', 'like', "%{$subQuery}%");
+                    $model->where('phone_number', 'like', "%{$subQuery}%");
                 } else {
-                    $model->orWhere('phone_number', 'like', "%{$subQuery}%")->orWhere('name', 'like', "%{$subQuery}%");
+                    $model->orWhere('phone_number', 'like', "%{$subQuery}%");
                 }
             }
+            $model->orWhere('name', 'like', "%{$query}%");
         });
         $customer_id = $this;
         $grid->column('updated_at', __('Updated at'))->sortable();
