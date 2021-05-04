@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\Actions\Customer\AppointmentCustomer;
+use Encore\Admin\Auth\Database\Administrator;
 use App\Models\Customer;
 use App\Models\AuthUser;
 use App\Admin\Actions\Customer\PtAssign;
@@ -84,7 +85,11 @@ class CustomerController extends AdminController
                     if ($sale) {
                         return $sale->name;
                     }
-                })->filter(AuthUser::all()->pluck('name', 'id')->toArray());
+                })->filter(
+                    $users = Administrator::whereHas('roles',  function ($query) {
+                        $query->whereIn('name', ['Sm', 'Sale', 'sale manager']);
+                    })->pluck('name', 'id')->toArray()
+                );
                 $grid->pt_status('Trạng thái PT')->display(function ($show) {
                     return $show;
                 })->filter(Constant::CUSTOMER_STATUS)->sortable()->editable('select', Constant::CUSTOMER_STATUS)->hide();
@@ -146,7 +151,11 @@ class CustomerController extends AdminController
                     if ($pt) {
                         return $pt->name;
                     }
-                })->filter(AuthUser::all()->pluck('name', 'id')->toArray());
+                })->filter(
+                    $users = Administrator::whereHas('roles',  function ($query) {
+                        $query->whereIn('name', ['PT manager', 'Personal trainee']);
+                    })->pluck('name', 'id')->toArray()
+                );
                 $grid->tools(function (Grid\Tools $tools) {
                     $tools->append(new PtAssign());
                     $tools->append(new PtRemove());
