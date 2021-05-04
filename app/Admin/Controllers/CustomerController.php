@@ -178,8 +178,12 @@ class CustomerController extends AdminController
         $grid->exporter(new ExcelExpoter());
         $grid->quickSearch(function ($model, $query) {
             $subQueries = explode(" ", $query);
-            foreach($subQueries as $idx => $subQuery){
-                $model->where('phone_number', 'like', "%{$subQuery}%");
+            foreach($subQueries as $i => $subQuery){
+                if ($i == 0){
+                    $model->where('phone_number', 'like', "%{$subQuery}%")->orWhere('name', 'like', "%{$subQuery}%");
+                } else {
+                    $model->orWhere('phone_number', 'like', "%{$subQuery}%")->orWhere('name', 'like', "%{$subQuery}%");
+                }
             }
         });
         $customer_id = $this;
