@@ -140,7 +140,7 @@ class CustomerController extends AdminController
                 $grid->model()->where('pt_id', '=', Admin::user()->id);
                 $grid->disableActions();
             } else {
-                $grid->model()->where('pt', '=', 1);
+                //$grid->model()->where('pt', '=', 1);
                 $grid->pt_id('Nhân viên Pt')->display(function ($formalityAreaId) {
                     $pt = AuthUser::find($formalityAreaId);
                     if ($pt) {
