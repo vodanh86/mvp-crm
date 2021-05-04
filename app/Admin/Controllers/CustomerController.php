@@ -176,6 +176,7 @@ class CustomerController extends AdminController
         $grid->exporter(new ExcelExpoter());
         $grid->quickSearch('phone_number', 'name');
         $customer_id = $this;
+        $grid->column('updated_at', __('Updated at'))->sortable();
         $grid->actions(function (Grid\Displayers\Actions $actions) {
             $actions->add(new GfpCustomer($actions->row->id));
             $actions->add(new AppointmentCustomer($actions->row->phone_number));

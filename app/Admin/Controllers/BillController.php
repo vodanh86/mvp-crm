@@ -129,7 +129,7 @@ class BillController extends AdminController
         $form->date('birthday', __('Ngày sinh'));
         $form->select('source', __('Nguồn'))->options(Constant::CUSTOMER_SOURCE)->default(0)->setWidth(2, 2);
         $form->date('bought_date', 'Ngày mua');
-        $form->mobile("phone", "Số điện thoại");
+        $form->mobile("phone", "Số điện thoại")->options(['mask' => '999 999 999']);
         $form->multipleSelect('sale_id')->options(AuthUser::all()->pluck('name', 'id'));
         $form->select('push', __('Có phải push ko'))->options(Constant::YES_NO_QUESTION)->default(0)->setWidth(2, 2);
         $form->select('payment_type', __('Loại thanh toán'))->options(Constant::PAYMENT_TYPE)->default(0)->setWidth(2, 2);
