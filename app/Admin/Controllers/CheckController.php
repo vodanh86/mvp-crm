@@ -66,7 +66,7 @@ class CheckController extends AdminController
         $grid->footer(function ($query) {
 
             // Query the total amount of the order with the paid status
-            $data = $query->get();
+            $data = $query->where('month', '=', '4')->get();
             $oldCom = array();
             $newCom = array();
             $oldSes = array();
