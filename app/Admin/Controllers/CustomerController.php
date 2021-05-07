@@ -67,7 +67,7 @@ class CustomerController extends AdminController
 
             $grid->column('setup_at', __('Ngày hẹn'))->sortable()->editable();
             $grid->column('plan', __('Plan'))->editable();
-            $grid->column('note', __('Note'))->editable()->setAttributes(['width' => ' 240px']);
+            $grid->column('note', __('Note'))->editable()->filter('like')->setAttributes(['width' => ' 240px']);
             $grid->column('like')->action(StarCustomer::class);
             //$grid->column('like', __('Quan tâm'))->editable('select', Constant::FAVORITE);
             $grid->column('end_date', __('Ngày cuối HĐ'))->filter('range')->setAttributes(['width' => ' 100px']);
