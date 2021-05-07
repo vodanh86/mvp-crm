@@ -32,7 +32,7 @@ class BillController extends AdminController
 
         $grid->column('id', __('Id'));
         $grid->column('code', __('Code'))->filter("like")->width(60);
-        $grid->column('name', __('Name'));
+        $grid->column('name', __('Name'))->filter("like");
         $grid->contract_type('Loại')->using(Constant::BILL_TYPE)->filter(Constant::BILL_TYPE);
         $grid->type('Loại PT')->using(Constant::PT_CONTRACT_TYPE)->filter(Constant::PT_CONTRACT_TYPE);
         $grid->column('price', __('Price'))->display(function ($title) {
@@ -80,6 +80,7 @@ class BillController extends AdminController
         $grid->batchActions(function ($batch) {
             $batch->disableDelete();
         });
+        $grid->quickSearch('name', 'code');
         $grid->model()->orderBy('id', 'DESC');
         return $grid;
     }
