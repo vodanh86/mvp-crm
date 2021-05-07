@@ -87,7 +87,7 @@ class CustomerController extends AdminController
                     }
                 })->filter(
                     $users = Administrator::whereHas('roles',  function ($query) {
-                        $query->whereIn('name', ['Sm', 'Sale', 'sale manager']);
+                        $query->whereIn('name', ['Sm', 'Sale', 'sale manager', 'administrator']);
                     })->pluck('name', 'id')->toArray()
                 );
                 $grid->pt_status('Trạng thái PT')->display(function ($show) {
