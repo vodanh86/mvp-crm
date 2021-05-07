@@ -136,7 +136,7 @@ class CheckController extends AdminController
     {
         $form = new Form(new Check());
         $form->belongsTo('contract_id', SelectContract::class,'Chọn hợp đồng');
-        $form->text('month', __('Tháng'))->default(3);
+        $form->text('month', __('Tháng'))->default(4);
         $form->table('description', function ($table) {
             $table->select('pt', __('Pt'))->options(AuthUser::all()->pluck('name', 'id'));
             $table->number('count');

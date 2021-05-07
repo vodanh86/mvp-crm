@@ -18,6 +18,8 @@ class SelectContract extends Selectable
         $this->column('price');
         $this->column('days');
 
+        $this->model()->where('verify', '=', 1);
+
         $this->filter(function (Filter $filter) {
             $filter->disableIdFilter();
             $filter->like('code');
