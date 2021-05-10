@@ -58,7 +58,9 @@ class ContractController extends AdminController
                     return $title;
                 }
             }
-        })->sortable();
+        })->sortable()->modal('Điều kiện phụ', function ($model) {
+            return $model->conditional_note;
+        });
         $grid->column('cared_note', __('Lưu ý'))->display(function ($title) {
             if ($title) {
                 if (strlen($title) > 10) {
@@ -67,10 +69,12 @@ class ContractController extends AdminController
                     return $title;
                 }
             }
-        })->sortable();
+        })->sortable()->modal('Lưu ý', function ($model) {
+            return $model->cared_note;
+        });
         
         $grid->column('bought_date', __('Ngày mua'))->sortable();
-        $grid->column('updated_at', __('Updated at'))->sortable();
+        $grid->column('expired_at', __('Ngày hết hạn'))->sortable();
         $grid->actions(function (Grid\Displayers\Actions $actions) {
             if($actions->row->verify == 1){
                 $actions->disableDelete();
@@ -127,6 +131,7 @@ class ContractController extends AdminController
         $form->text('code', __('Code'));
         $form->text('name', __('Name'));
         $form->date('bought_date', 'Ngày mua');
+        $form->date('expired_at', 'Ngày hết hạn');
         $form->multipleSelect('sale_id')->options(AuthUser::all()->pluck('name', 'id'));
         $form->currency('price', __('Price'))->symbol('VND');
         $form->select('contract_type', __('Loại hợp đồng'))->options(Constant::CONTRACT_TYPE)->default(1)->setWidth(2, 2)
