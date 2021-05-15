@@ -11,6 +11,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use App\Admin\Selectable\SelectContract;
+use App\Admin\Actions\Check\VerifyCheck;
 
 class CheckController extends AdminController
 {
@@ -42,9 +43,16 @@ class CheckController extends AdminController
             }
             return json_encode($newDes);
         });
+        $grid->column('verify', __('Xác nhận'))->action(VerifyCheck::class)->filter(Constant::YES_NO_QUESTION);
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
 
+        $grid->actions(function (Grid\Displayers\Actions $actions) {
+            if($actions->row->verify == 1){
+                $actions->disableDelete();
+                $actions->disableEdit();
+            }
+        });
 
         $grid->filter(function($filter){
             // Remove the default id filter
@@ -123,7 +131,12 @@ class CheckController extends AdminController
         $show->field('description', __('Description'));
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
-
+        $show->panel()
+        ->tools(function ($tools) {
+            $tools->disableEdit();
+            $tools->disableList();
+            $tools->disableDelete();
+        });
         return $show;
     }
 
