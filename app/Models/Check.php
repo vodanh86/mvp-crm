@@ -20,7 +20,7 @@ class Check extends Model
 
     public function getDescriptionAttribute($value)
     {
-        return $value;
+        return array_values(json_decode($value, true) ?: []);
     }
 
     public function setDescriptionAttribute($value)
