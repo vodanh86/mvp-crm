@@ -101,6 +101,7 @@ class BillController extends AdminController
         $show->field('type', __('Type'));
         $show->field('price', __('Price'));
         $show->field('days', __('Days'));
+        $show->field('contract_id', __('Họp đồng'));
         $show->field('conditional_note', __('Điều kiện phụ'));
         $show->field('cared_note', __('Điều cần lưu ý'));
         $show->field('cared_note', __('Điều cần lưu ý'));
