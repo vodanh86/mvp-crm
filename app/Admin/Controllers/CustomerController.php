@@ -45,7 +45,7 @@ class CustomerController extends AdminController
             return "<a href='tel:" . preg_replace('/\s+/', '', $title) . "' style='white-space: pre;'>$title</a>";
         })->filter('like');
         if (Admin::user()->isRole('Sale') || Admin::user()->isRole('Sm') || Admin::user()->isAdministrator()) {
-            $grid->block_no('Toà nhà')->display(function ($block_id) {
+            $grid->block_no('Địa chỉ')->display(function ($block_id) {
                 if (isset($block_id) && array_key_exists($block_id, Constant::BLOCK)) {
                     return Constant::BLOCK[$block_id];
                 }
@@ -255,7 +255,7 @@ class CustomerController extends AdminController
         //$form->datetime('birthday', __('Birthday'))->default(date('Y-m-d H:i:s'));
         $form->text('room_no', __('Room no'));
         $form->text('phone_number', __('Phone number'));
-        $form->select('block_no', __('Toà nhà'))->options(Constant::BLOCK)->setWidth(2, 2)->default(100);
+        $form->select('block_no', __('Địa chỉ'))->options(Constant::BLOCK)->setWidth(2, 2)->default(100);
         $form->text('address', __('Địa chỉ'));
         $form->select('telco', __('Nhà mạng'))->options(Constant::TELCO)->setWidth(2, 2);
         if (Admin::user()->isRole('Pt') || Admin::user()->isRole('Fm')) {

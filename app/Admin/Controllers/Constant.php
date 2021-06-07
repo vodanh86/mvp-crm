@@ -10,6 +10,9 @@ abstract class Constant
         0 => 'N02 T3', 1 => "N03 T3-T4", 2 => "N03 T1", 3 => "N01 T4", 4 => "N02 T1", 5 => "N03 T2", 6 => "N01 T1",
         7 => "N04 AA-CC", 8 => "N01 T5", 9 => "N02 T2", 10 => "N01 T8", 12 => "N03 T3", 13 => "N01 T2", 14 => "N01 T3",
         15 => "Toà 789",
+        16 => "Xuân La",
+        17 => "Xuân Đỉnh",
+        18 => "Xuân Tảo",
         100 => "Khác"
     );
     const CUSTOMER_STATUS = array(
