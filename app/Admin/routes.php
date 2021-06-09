@@ -24,5 +24,5 @@ Route::group([
     $router->resource('contracts', ContractController::class);
     $router->resource('checks', CheckController::class);
     $router->resource('expenditures', ExpenditureController::class);
-    $router->resource('bills', BillController::class);
+    $router->resource('bills', BillController::class, ['contract_id']);
 });

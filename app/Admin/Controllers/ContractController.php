@@ -8,8 +8,10 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Encore\Admin\Facades\Admin;
 use App\Admin\Actions\Contract\VerifyContract;
 use App\Admin\Actions\Contract\Checkin;
+use App\Admin\Actions\Contract\AddBill;
 
 class ContractController extends AdminController
 {
@@ -31,12 +33,19 @@ class ContractController extends AdminController
         $grid = new Grid(new Contract());
 
         $grid->column('id', __('Id'));
-        $grid->column('code', __('Code'))->filter("like")->width(60);
         $grid->column('name', __('Name'))->filter("like");
         $grid->contract_type('Loại')->using(Constant::CONTRACT_TYPE)->filter(Constant::CONTRACT_TYPE);
-        $grid->type('Loại PT')->using(Constant::PT_CONTRACT_TYPE)->filter(Constant::PT_CONTRACT_TYPE);
+        $grid->type('Khách')->using(Constant::PT_CONTRACT_TYPE)->filter(Constant::PT_CONTRACT_TYPE);
         $grid->column('price', __('Price'))->display(function ($title) {
             return number_format($title);
+        });
+        $grid->bills()->display(function ($bills) {
+
+            $bills = array_map(function ($bill) {
+                return "<span class='label label-success'><a href='bills/".$bill['id']."' style='color:white'>{$bill['code']}</a></span>";
+            }, $bills);
+        
+            return join('&nbsp;', $bills);
         });
         $grid->column('days', __('Days'));
         $grid->column('price_one', __('Giá 1 session'))->display(function ($title) {
@@ -80,6 +89,8 @@ class ContractController extends AdminController
                 $actions->disableDelete();
                 $actions->disableEdit();
                 $actions->add(new Checkin($actions->row->id));
+            } else {
+                $actions->add(new AddBill($actions->row->id));
             }
         });
         $grid->batchActions(function ($batch) {
@@ -100,7 +111,6 @@ class ContractController extends AdminController
         $show = new Show(Contract::findOrFail($id));
 
         $show->field('id', __('Id'));
-        $show->field('code', __('Code'));
         $show->field('name', __('Name'));
         $show->field('type', __('Type'));
         $show->field('price', __('Price'));
@@ -128,17 +138,23 @@ class ContractController extends AdminController
     {
         $form = new Form(new Contract());
 
-        $form->text('code', __('Code'));
-        $form->text('name', __('Name'));
-        $form->date('bought_date', 'Ngày mua');
+        $form->text('name', __('Name'))->required();
+        $form->date('bought_date', 'Ngày mua')->required();
         $form->date('expired_at', 'Ngày hết hạn');
         $form->multipleSelect('sale_id')->options(AuthUser::all()->pluck('name', 'id'));
         $form->currency('price', __('Price'))->symbol('VND');
         $form->select('contract_type', __('Loại hợp đồng'))->options(Constant::CONTRACT_TYPE)->default(1)->setWidth(2, 2)
         ->when(0, function (Form $form) {
-            $form->select('type', __('Loại hợp đồng PT'))->options(Constant::PT_CONTRACT_TYPE)->default(1)->setWidth(2, 2);
+            $form->select('type', __('Khách'))->options(Constant::PT_CONTRACT_TYPE)->default(1)->setWidth(2, 2);
             $form->text('days', __('Days'));
             $form->currency('price_one', __('Giá 1 session'))->symbol('VND')->readonly();
+        })
+        ->when(1, function (Form $form) {
+            $form->select('time', __('Thời điểm tập'))->options(Constant::CONTRACT_TIME)->default(0)->setWidth(2, 2);
+            $form->select('length', __('Thời gian tập'))->options(Constant::CONTRACT_LENGTH)->default(0)->setWidth(2, 2);
+            $form->select('service', __('Gói tập'))->options(Constant::CONTRACT_SERVICE)->default(0)->setWidth(2, 2);
+            $form->select('place', __('Phòng tập'))->options(Constant::CONTRACT_PLACE)->default(0)->setWidth(2, 2);
+            $form->number('member', __('Số thành viên'))->default(1);
         })
         ->when(5, function (Form $form) {
             $form->select('type', __('Loại hợp đồng PT'))->options(Constant::PT_CONTRACT_TYPE)->default(1)->setWidth(2, 2);
@@ -147,6 +163,16 @@ class ContractController extends AdminController
         });
         $form->text('conditional_note', __('Điều kiện phụ'));
         $form->text('cared_note', __('Điều cần lưu ý'));
+        $form->select('verify', __('Xác nhận'))->options(Constant::YES_NO_QUESTION)->default(0)->setWidth(2, 2);
+
+       if (Admin::user()->isAdministrator()) {
+            $form->hasMany('bills', function (Form\NestedForm $form) {
+                $form->text('code', 'Mã biên nhận');
+                $form->currency('price', 'Số tiền');
+                $form->datetime('bought_date', 'Ngày thanh toán');
+                $form->select('verify', __('Xác nhận'))->options(Constant::YES_NO_QUESTION)->default(0)->setWidth(2, 2);
+            });
+        }
         // callback before save
         $form->saving(function (Form $form) {
             if (($form->contract_type == 0) || ($form->contract_type == 5)){

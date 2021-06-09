@@ -18,6 +18,11 @@ class Bill extends Model
         $this->attributes['sale_id'] = json_encode(array_values($value));
     }
 
+    public function contract()
+    {
+        return $this->belongsTo(Contract::class,'contract_id');
+    }
+
     /*public function getContractIdAttribute($value)
     {
         return array_values(json_decode($value, true) ?: []);
