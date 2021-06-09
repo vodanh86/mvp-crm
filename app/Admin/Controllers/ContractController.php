@@ -39,7 +39,7 @@ class ContractController extends AdminController
         $grid->column('price', __('Price'))->display(function ($title) {
             return number_format($title);
         });
-        $grid->bills()->display(function ($bills) {
+        $grid->bills('Thanh toán')->display(function ($bills) {
 
             $bills = array_map(function ($bill) {
                 return "<span class='label label-success'><a href='bills/".$bill['id']."' style='color:white'>{$bill['code']}</a></span>";

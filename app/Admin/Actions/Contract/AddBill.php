@@ -9,7 +9,7 @@ class AddBill extends RowAction
 {
     protected $id;
     protected $contractId;
-    public $name = "Add bill";
+    public $name = "Add payment";
     //
     public function __construct($contractId)
     {
