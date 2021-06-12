@@ -254,7 +254,7 @@ class CustomerController extends AdminController
         $form->text('name', __('Name'));
         //$form->datetime('birthday', __('Birthday'))->default(date('Y-m-d H:i:s'));
         $form->text('room_no', __('Room no'));
-        $form->text('phone_number', __('Phone number'));
+        $form->number('phone_number', __('Phone number'));
         $form->select('block_no', __('Địa chỉ'))->options(Constant::BLOCK)->setWidth(2, 2)->default(100);
         $form->text('address', __('Địa chỉ'));
         $form->select('telco', __('Nhà mạng'))->options(Constant::TELCO)->setWidth(2, 2);
