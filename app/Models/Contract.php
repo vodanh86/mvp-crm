@@ -22,6 +22,11 @@ class Contract extends Model
         $this->attributes['sale_id'] = json_encode(array_values($value));
     }
 
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class,'customer_id');
+    }
+
 	protected $hidden = [
     ];
 

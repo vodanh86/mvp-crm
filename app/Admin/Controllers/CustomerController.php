@@ -18,6 +18,7 @@ use Encore\Admin\Facades\Admin;
 use App\Admin\Extensions\ExcelExpoter;
 use App\Admin\Actions\Customer\StarCustomer;
 use App\Admin\Actions\Customer\GfpCustomer;
+use App\Admin\Actions\Customer\AddContract;
 
 
 class CustomerController extends AdminController
@@ -200,6 +201,7 @@ class CustomerController extends AdminController
         $grid->column('updated_at', __('Updated at'))->sortable();
         $grid->actions(function (Grid\Displayers\Actions $actions) {
             $actions->add(new GfpCustomer($actions->row->id));
+            $actions->add(new AddContract($actions->row->id));
             $actions->add(new AppointmentCustomer($actions->row->phone_number));
         });
         return $grid;

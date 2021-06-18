@@ -4,11 +4,13 @@ namespace App\Admin\Controllers;
 
 use App\Models\Contract;
 use App\Models\AuthUser;
+use App\Models\Customer;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use Encore\Admin\Facades\Admin;
+use Encore\Admin\Layout\Content;
 use App\Admin\Actions\Contract\VerifyContract;
 use App\Admin\Actions\Contract\Checkin;
 use App\Admin\Actions\Contract\AddBill;
@@ -36,6 +38,11 @@ class ContractController extends AdminController
         $grid->column('name', __('Name'))->filter("like");
         $grid->contract_type('Loại')->using(Constant::CONTRACT_TYPE)->filter(Constant::CONTRACT_TYPE);
         $grid->type('Khách')->using(Constant::PT_CONTRACT_TYPE)->filter(Constant::PT_CONTRACT_TYPE);
+        $grid->customer('Tên khách')->display(function($customer){
+            if ($customer){
+                return "<span class='label label-success'><a href='customers/".$customer['id']."' style='color:white'>{$customer['name']}</a></span>";
+            }
+        });
         $grid->column('price', __('Price'))->display(function ($title) {
             return number_format($title);
         });
@@ -96,6 +103,7 @@ class ContractController extends AdminController
         $grid->batchActions(function ($batch) {
             $batch->disableDelete();
         });
+        $grid->disableCreateButton();
         $grid->model()->orderBy('id', 'DESC');
         return $grid;
     }
@@ -134,11 +142,12 @@ class ContractController extends AdminController
      *
      * @return Form
      */
-    protected function form()
+    protected function form($customerId = null)
     {
         $form = new Form(new Contract());
 
         $form->text('name', __('Name'))->required();
+        $form->select('customer_id')->options(Customer::all()->pluck('name', 'id'))->default($customerId);
         $form->date('bought_date', 'Ngày mua')->required();
         $form->date('expired_at', 'Ngày hết hạn');
         $form->multipleSelect('sale_id')->options(AuthUser::all()->pluck('name', 'id'));
@@ -185,5 +194,14 @@ class ContractController extends AdminController
             }
         });
         return $form;
+    }
+
+    public function create(Content $content): Content
+    {
+        $customerId = isset($_GET['customer_id']) ? $_GET['customer_id'] : null;
+        return $content
+            ->title($this->title())
+            ->description($this->description['create'] ?? trans('admin.create'))
+            ->body($this->form($customerId));
     }
 }
