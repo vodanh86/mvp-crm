@@ -37,8 +37,9 @@ class AppointmentController extends AdminController
         $grid->column('id', __('Id'))->sortable();
         $grid->column('name', __('Name'))->filter('like')->sortable()->editable();
         $grid->column('phone_number', __('Phone number'))->filter('like')->editable();
-        $grid->column('app_date', __('App date'))->sortable()->editable();
+        $grid->column('app_date', __('App date'))->sortable()->filter('date')->editable();
         $grid->column('app_time', __('App time'))->editable();
+        $grid->column('place', __('Địa chỉ'))->editable()->using(Constant::CONTRACT_PLACE);
         $grid->column('note', __('Note'))->editable();
         $grid->sale_id('Nhân viên Sale')->display(function($saleId) {
             $sale = AuthUser::find($saleId);
@@ -114,6 +115,7 @@ class AppointmentController extends AdminController
         }
         $form->date('app_date', __('App date'))->default(date('Y-m-d'));
         $form->text('app_time', __('App time'));
+        $form->select('place', __('Địa điểm'))->options(Constant::CONTRACT_PLACE)->setWidth(2, 2);
         $form->text('note', __('Note'));
         $form->select('type', __('Loại hẹn'))->options(Constant::APP_TYPE)->setWidth(2, 2);
         $form->select('sale_id', __('Nhân viên chăm sóc'))->options(AuthUser::all()->pluck('name','id'))->default(Admin::user()->id);
