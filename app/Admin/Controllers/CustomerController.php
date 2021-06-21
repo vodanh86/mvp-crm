@@ -19,6 +19,7 @@ use App\Admin\Extensions\ExcelExpoter;
 use App\Admin\Actions\Customer\StarCustomer;
 use App\Admin\Actions\Customer\GfpCustomer;
 use App\Admin\Actions\Customer\AddContract;
+use App\Admin\Actions\Customer\ViewContract;
 
 
 class CustomerController extends AdminController
@@ -202,6 +203,7 @@ class CustomerController extends AdminController
         $grid->actions(function (Grid\Displayers\Actions $actions) {
             $actions->add(new GfpCustomer($actions->row->id));
             $actions->add(new AddContract($actions->row->id));
+            $actions->add(new ViewContract($actions->row->id));
             $actions->add(new AppointmentCustomer($actions->row->phone_number));
         });
         return $grid;

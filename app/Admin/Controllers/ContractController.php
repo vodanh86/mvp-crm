@@ -31,6 +31,7 @@ class ContractController extends AdminController
      */
     protected function grid()
     {
+        $customerId = isset($_GET['customer_id']) ? $_GET['customer_id'] : null;
         $listPts = AuthUser::pluck('name', 'id');
         $grid = new Grid(new Contract());
 
@@ -104,6 +105,9 @@ class ContractController extends AdminController
             $batch->disableDelete();
         });
         $grid->disableCreateButton();
+        if ($customerId != null){
+            $grid->model()->where('customer_id', '=', $customerId);
+        } 
         $grid->model()->orderBy('id', 'DESC');
         return $grid;
     }
