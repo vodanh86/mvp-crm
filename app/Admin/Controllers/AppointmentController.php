@@ -34,12 +34,11 @@ class AppointmentController extends AdminController
     {
         $grid = new Grid(new Appointment());
 
-        $grid->column('id', __('Id'))->sortable();
         $grid->column('name', __('Name'))->filter('like')->sortable()->editable();
         $grid->column('phone_number', __('Phone number'))->filter('like')->editable();
         $grid->column('app_date', __('App date'))->sortable()->filter('date')->editable();
         $grid->column('app_time', __('App time'))->editable();
-        $grid->column('place', __('Địa chỉ'))->editable()->using(Constant::CONTRACT_PLACE);
+        $grid->column('place', __('Địa chỉ'))->using(Constant::CONTRACT_PLACE);
         $grid->column('note', __('Note'))->editable();
         $grid->sale_id('Nhân viên Sale')->display(function($saleId) {
             $sale = AuthUser::find($saleId);
