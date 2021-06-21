@@ -56,6 +56,7 @@ class ContractController extends AdminController
             return join('&nbsp;', $bills);
         });
         $grid->column('days', __('Days'));
+        $grid->column('used_days', __('Số ngày đã tập'));
         $grid->column('price_one', __('Giá 1 session'))->display(function ($title) {
             return number_format($title);
         })->sortable();
@@ -160,6 +161,7 @@ class ContractController extends AdminController
         ->when(0, function (Form $form) {
             $form->select('type', __('Khách'))->options(Constant::PT_CONTRACT_TYPE)->default(1)->setWidth(2, 2);
             $form->text('days', __('Days'));
+            $form->text('used_days', __('Số ngày đã tập'));
             $form->currency('price_one', __('Giá 1 session'))->symbol('VND')->readonly();
         })
         ->when(1, function (Form $form) {
