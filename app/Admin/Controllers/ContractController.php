@@ -37,6 +37,7 @@ class ContractController extends AdminController
 
         $grid->column('id', __('Id'));
         $grid->column('name', __('Name'))->filter("like");
+        $grid->column('code', __('Mã'))->filter("like");
         $grid->contract_type('Loại')->using(Constant::CONTRACT_TYPE)->filter(Constant::CONTRACT_TYPE);
         $grid->type('Khách')->using(Constant::PT_CONTRACT_TYPE)->filter(Constant::PT_CONTRACT_TYPE);
         $grid->customer('Tên khách')->display(function($customer){
