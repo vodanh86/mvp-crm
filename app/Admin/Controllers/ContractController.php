@@ -154,6 +154,7 @@ class ContractController extends AdminController
 
         $form->text('name', __('Name'))->required();
         $form->select('customer_id')->options(Customer::all()->pluck('name', 'id'))->default($customerId);
+        $form->text('code', __('Mã'))->required();
         $form->date('bought_date', 'Ngày mua')->required();
         $form->date('expired_at', 'Ngày hết hạn');
         $form->multipleSelect('sale_id')->options(AuthUser::all()->pluck('name', 'id'));
