@@ -33,12 +33,7 @@ SCRIPT;
 
     public function href()
     {
-        $contractRecord = Contract::where('customer_id', '=', $this->customerId)->first();
-        if($contractRecord != null){
-            $link = "../admin/contracts/{$contractRecord->id}/edit";
-        }else {
-            $link = "../admin/contracts/create?customer_id=" . $this->customerId;
-        }
+        $link = "../admin/contracts/create?customer_id=" . $this->customerId;
         return $link;
     }
 
