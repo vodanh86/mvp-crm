@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use DB;
 use App\Models\Contract;
 use App\Models\AuthUser;
 use App\Models\Customer;
@@ -153,7 +154,10 @@ class ContractController extends AdminController
         $form = new Form(new Contract());
 
         $form->text('name', __('Name'))->required();
-        $form->select('customer_id')->options(Customer::all()->pluck('name', 'id'))->default($customerId);
+        $form->select('customer_id')->options(
+        Customer::all(DB::raw('CONCAT(name, " - ", phone_number) AS full_name, id'))
+        ->pluck('full_name', 'id')
+        )->default($customerId);
         $form->text('code', __('Mã'))->required();
         $form->date('bought_date', 'Ngày mua')->required();
         $form->date('expired_at', 'Ngày hết hạn');
