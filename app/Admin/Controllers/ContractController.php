@@ -45,7 +45,7 @@ class ContractController extends AdminController
             if ($customer){
                 return "<span class='label label-success'><a href='customers/".$customer['id']."' style='color:white'>{$customer['name']}</a></span>";
             }
-        });
+        })->sortable();
         $grid->column('price', __('Price'))->display(function ($title) {
             return number_format($title);
         });
@@ -166,6 +166,7 @@ class ContractController extends AdminController
         $form->select('contract_type', __('Loại hợp đồng'))->options(Constant::CONTRACT_TYPE)->default(1)->setWidth(2, 2)
         ->when(0, function (Form $form) {
             $form->select('type', __('Khách'))->options(Constant::PT_CONTRACT_TYPE)->default(1)->setWidth(2, 2);
+            $form->select('pt_category', __('Loại hợp đồng PT'))->options(Constant::PT_CATEGORY)->default(1)->setWidth(2, 2);
             $form->text('days', __('Days'));
             $form->text('used_days', __('Số ngày đã tập'));
             $form->currency('price_one', __('Giá 1 session'))->symbol('VND')->readonly();

@@ -35,6 +35,7 @@ abstract class Constant
     const CONTRACT_LENGTH = array(0 => '1 Tháng', 1 => '3 Tháng', 2 => '6 Tháng', 3 => '1 Năm', 4 => '2 Năm', 5 => '3 Năm', 6 => '5 Năm', 7 => '10 Năm');
     const CONTRACT_PLACE = array(0 => 'N02-T3', 1 => 'N03-T4');
     const CONTRACT_SERVICE = array(0 => 'Swimming', 1 => 'Gym', 2 => 'Yoga + GroupX');
+    const PT_CATEGORY = array(0 => 'Giãn cơ', 1 => 'Gym', 2 => 'Kick fit', 10 => 'Khác');
 
     const BILL_TYPE = array(0 => 'PT', 1 => 'Hội viên', 2 => "Gia hạn", 3 => 'Chuyển nhượng', 4 => "Bơi cơ bản", 5 => "PT bơi",
      6 => "Nâng câp", 7 => "Bảo lưu", 8 => "Làm lại thẻ");
