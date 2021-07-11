@@ -182,7 +182,7 @@ class CustomerController extends AdminController
                 ]);
             });
         }
-        if (!Admin::user()->isAdministrator()) {
+        if (!(Admin::user()->isAdministrator() || Admin::user()->isRole('Sm'))) {
             $grid->model()->orderBy('like', 'DESC');
         }
         $grid->model()->orderBy('id', 'DESC');
